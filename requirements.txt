@@ -1,0 +1,31 @@
+# Cancer Fighting Foods Protocol Generator
+# Python 3.10+
+
+# PubMed/Research Access
+biopython>=1.81
+requests>=2.31.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Database
+sqlalchemy>=2.0.0
+
+# Environment & Config
+python-dotenv>=1.0.0
+
+# Report Generation
+reportlab>=4.0.0
+jinja2>=3.1.0
+
+# Date/Time
+python-dateutil>=2.8.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Drug Interaction Checking
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
