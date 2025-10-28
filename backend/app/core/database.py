@@ -180,6 +180,21 @@ class Database:
             )
         """)
 
+        # Health photos table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS health_photos (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                date TEXT NOT NULL,
+                photo_type TEXT DEFAULT 'health',
+                filename TEXT NOT NULL,
+                file_path TEXT NOT NULL,
+                notes TEXT,
+                uploaded_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id)
+            )
+        """)
+
         # Create indexes for common queries
         cursor.execute("""
             CREATE INDEX IF NOT EXISTS idx_weight_records_user_date
@@ -199,6 +214,11 @@ class Database:
         cursor.execute("""
             CREATE INDEX IF NOT EXISTS idx_research_food
             ON research_studies(food_studied, cancer_type)
+        """)
+
+        cursor.execute("""
+            CREATE INDEX IF NOT EXISTS idx_health_photos_user_date
+            ON health_photos(user_id, date)
         """)
 
         self.conn.commit()
@@ -481,6 +501,214 @@ class Database:
             record['missed_foods'] = json.loads(record['missed_foods'])
             records.append(record)
         return records
+
+    # Health photos operations
+    def add_health_photo(self, photo_data: Dict[str, Any]) -> int:
+        """Add a health photo record"""
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            INSERT INTO health_photos (
+                user_id, date, photo_type, filename, file_path, notes
+            ) VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            photo_data.get('user_id'),
+            photo_data.get('date', datetime.now().isoformat()),
+            photo_data.get('photo_type', 'health'),
+            photo_data.get('filename'),
+            photo_data.get('file_path'),
+            photo_data.get('notes', ''),
+        ))
+        self.conn.commit()
+        return cursor.lastrowid
+
+    def get_health_photos(self, user_id: int, limit: int = 100) -> List[Dict]:
+        """Get health photos for a user"""
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT * FROM health_photos
+            WHERE user_id = ?
+            ORDER BY date DESC, uploaded_at DESC
+            LIMIT ?
+        """, (user_id, limit))
+        return [dict(row) for row in cursor.fetchall()]
+
+    def delete_health_photo(self, photo_id: int) -> bool:
+        """Delete a health photo record"""
+        cursor = self.conn.cursor()
+        cursor.execute("DELETE FROM health_photos WHERE id = ?", (photo_id,))
+        self.conn.commit()
+        return cursor.rowcount > 0
+
+    def update_health_photo_tags(self, photo_id: int, tags: List[str]) -> bool:
+        """Update tags for a health photo"""
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            UPDATE health_photos
+            SET tags = ?
+            WHERE id = ?
+        """, (json.dumps(tags), photo_id))
+        self.conn.commit()
+        return cursor.rowcount > 0
+
+    def archive_health_photo(self, photo_id: int, archived: bool = True) -> bool:
+        """Archive or unarchive a health photo"""
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            UPDATE health_photos
+            SET archived = ?
+            WHERE id = ?
+        """, (archived, photo_id))
+        self.conn.commit()
+        return cursor.rowcount > 0
+
+    def get_health_photos_filtered(self, user_id: int, archived: bool = False, limit: int = 100) -> List[Dict]:
+        """Get health photos filtered by archived status"""
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT * FROM health_photos
+            WHERE user_id = ? AND archived = ?
+            ORDER BY date DESC, uploaded_at DESC
+            LIMIT ?
+        """, (user_id, archived, limit))
+        photos = []
+        for row in cursor.fetchall():
+            photo = dict(row)
+            photo['tags'] = json.loads(photo['tags']) if photo.get('tags') else []
+            photos.append(photo)
+        return photos
+
+    # Medication log operations
+    def log_medication(self, log_data: Dict[str, Any]) -> int:
+        """Log a medication dose"""
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            INSERT INTO medication_log (
+                user_id, medication_id, date, time, dosage, taken, notes
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (
+            log_data.get('user_id'),
+            log_data.get('medication_id'),
+            log_data.get('date', datetime.now().date().isoformat()),
+            log_data.get('time', datetime.now().time().isoformat()),
+            log_data.get('dosage'),
+            log_data.get('taken', True),
+            log_data.get('notes', ''),
+        ))
+        self.conn.commit()
+        return cursor.lastrowid
+
+    def get_medication_log(self, user_id: int, date: str = None, limit: int = 100) -> List[Dict]:
+        """Get medication log entries"""
+        cursor = self.conn.cursor()
+        if date:
+            cursor.execute("""
+                SELECT ml.*, m.name as medication_name
+                FROM medication_log ml
+                JOIN medications m ON ml.medication_id = m.id
+                WHERE ml.user_id = ? AND ml.date = ?
+                ORDER BY ml.time DESC
+                LIMIT ?
+            """, (user_id, date, limit))
+        else:
+            cursor.execute("""
+                SELECT ml.*, m.name as medication_name
+                FROM medication_log ml
+                JOIN medications m ON ml.medication_id = m.id
+                WHERE ml.user_id = ?
+                ORDER BY ml.date DESC, ml.time DESC
+                LIMIT ?
+            """, (user_id, limit))
+        return [dict(row) for row in cursor.fetchall()]
+
+    def get_user_medications(self, user_id: int) -> List[Dict]:
+        """Get all medications for a user"""
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT * FROM medications
+            WHERE user_id = ?
+            ORDER BY name
+        """, (user_id,))
+        return [dict(row) for row in cursor.fetchall()]
+
+    def add_medication(self, med_data: Dict[str, Any]) -> int:
+        """Add a medication for a user"""
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            INSERT INTO medications (
+                user_id, name, generic_name, dosage, frequency
+            ) VALUES (?, ?, ?, ?, ?)
+        """, (
+            med_data.get('user_id'),
+            med_data.get('name'),
+            med_data.get('generic_name'),
+            med_data.get('dosage'),
+            med_data.get('frequency'),
+        ))
+        self.conn.commit()
+        return cursor.lastrowid
+
+    # Hydration tracking operations
+    def log_hydration(self, user_id: int, amount_oz: float = 8.0) -> int:
+        """Log water intake"""
+        cursor = self.conn.cursor()
+        now = datetime.now()
+        cursor.execute("""
+            INSERT INTO hydration_log (
+                user_id, date, time, amount_oz
+            ) VALUES (?, ?, ?, ?)
+        """, (user_id, now.date().isoformat(), now.time().isoformat(), amount_oz))
+        self.conn.commit()
+        return cursor.lastrowid
+
+    def get_hydration_log(self, user_id: int, date: str = None) -> List[Dict]:
+        """Get hydration log entries"""
+        cursor = self.conn.cursor()
+        if date:
+            cursor.execute("""
+                SELECT * FROM hydration_log
+                WHERE user_id = ? AND date = ?
+                ORDER BY time
+            """, (user_id, date))
+        else:
+            cursor.execute("""
+                SELECT * FROM hydration_log
+                WHERE user_id = ? AND date = ?
+                ORDER BY time
+            """, (user_id, datetime.now().date().isoformat()))
+        return [dict(row) for row in cursor.fetchall()]
+
+    def get_hydration_total(self, user_id: int, date: str = None) -> float:
+        """Get total water intake for a date"""
+        if not date:
+            date = datetime.now().date().isoformat()
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT SUM(amount_oz) as total
+            FROM hydration_log
+            WHERE user_id = ? AND date = ?
+        """, (user_id, date))
+        result = cursor.fetchone()
+        return result['total'] if result and result['total'] else 0.0
+
+    def get_hydration_goal(self, user_id: int) -> float:
+        """Get user's daily hydration goal"""
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT daily_goal_oz FROM hydration_goals
+            WHERE user_id = ?
+        """, (user_id,))
+        result = cursor.fetchone()
+        return result['daily_goal_oz'] if result else 64.0
+
+    def set_hydration_goal(self, user_id: int, goal_oz: float) -> bool:
+        """Set user's daily hydration goal"""
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            INSERT OR REPLACE INTO hydration_goals (user_id, daily_goal_oz, updated_at)
+            VALUES (?, ?, ?)
+        """, (user_id, goal_oz, datetime.now().isoformat()))
+        self.conn.commit()
+        return True
 
     def close(self):
         """Close database connection"""

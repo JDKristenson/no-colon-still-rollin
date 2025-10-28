@@ -5,6 +5,10 @@ import Protocol from './pages/Protocol';
 import Compliance from './pages/Compliance';
 import Weight from './pages/Weight';
 import MealPlanner from './pages/MealPlanner';
+import Library from './pages/Library';
+import Health from './pages/Health';
+import Hydration from './pages/Hydration';
+import Medications from './pages/Medications';
 import './index.css';
 
 const queryClient = new QueryClient();
@@ -35,6 +39,18 @@ function App() {
                     <Link to="/weight" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
                       Weight
                     </Link>
+                    <Link to="/library" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
+                      Library
+                    </Link>
+                    <Link to="/health" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
+                      Health
+                    </Link>
+                    <Link to="/hydration" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
+                      Hydration
+                    </Link>
+                    <Link to="/medications" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">
+                      Medications
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -48,6 +64,10 @@ function App() {
               <Route path="/meals" element={<MealPlanner />} />
               <Route path="/compliance" element={<Compliance />} />
               <Route path="/weight" element={<Weight />} />
+              <Route path="/library" element={<Library />} />
+              <Route path="/health" element={<Health />} />
+              <Route path="/hydration" element={<Hydration />} />
+              <Route path="/medications" element={<Medications />} />
             </Routes>
           </main>
         </div>

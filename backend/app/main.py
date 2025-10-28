@@ -30,13 +30,18 @@ app.add_middleware(
 )
 
 # Include API routers
-from app.api import protocol, weight, compliance, foods, status
+from app.api import protocol, weight, compliance, foods, status, library, exports, health_photos, medications, hydration
 
 app.include_router(protocol.router, prefix="/api/protocol", tags=["Protocol"])
 app.include_router(weight.router, prefix="/api/weight", tags=["Weight"])
 app.include_router(compliance.router, prefix="/api/compliance", tags=["Compliance"])
 app.include_router(foods.router, prefix="/api/foods", tags=["Foods"])
 app.include_router(status.router, prefix="/api/status", tags=["Status"])
+app.include_router(library.router, prefix="/api/library", tags=["Library"])
+app.include_router(exports.router, prefix="/api/exports", tags=["Exports"])
+app.include_router(health_photos.router, prefix="/api/health-photos", tags=["Health Photos"])
+app.include_router(medications.router, prefix="/api/medications", tags=["Medications"])
+app.include_router(hydration.router, prefix="/api/hydration", tags=["Hydration"])
 
 # Health check
 @app.get("/health")

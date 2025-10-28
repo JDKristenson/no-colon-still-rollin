@@ -10,16 +10,17 @@ load_dotenv()
 
 # Project paths
 PROJECT_ROOT = Path(__file__).parent.parent
-DATA_DIR = PROJECT_ROOT / "data"
-REPORTS_DIR = PROJECT_ROOT / "reports"
-SRC_DIR = PROJECT_ROOT / "src"
+DATA_DIR = PROJECT_ROOT / "core" / "data"
+REPORTS_DIR = PROJECT_ROOT / "core" / "reports"
+SRC_DIR = PROJECT_ROOT / "core" / "src"
 
 # Ensure directories exist
 DATA_DIR.mkdir(exist_ok=True)
 REPORTS_DIR.mkdir(exist_ok=True)
 
 # Database
-DATABASE_PATH = os.getenv("DATABASE_PATH", str(DATA_DIR / "cancer_foods.db"))
+# Use absolute path to ensure we always connect to the right database
+DATABASE_PATH = str(DATA_DIR / "cancer_foods.db")
 
 # NCBI/PubMed API
 NCBI_EMAIL = os.getenv("NCBI_EMAIL", "")

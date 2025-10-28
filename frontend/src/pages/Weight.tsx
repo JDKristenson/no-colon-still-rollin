@@ -52,11 +52,35 @@ export default function Weight() {
   const weightChange = currentWeight && startingWeight ? currentWeight - startingWeight : 0;
   const weightChangePercent = startingWeight ? ((weightChange / startingWeight) * 100) : 0;
 
+  const handleExport = (format: 'excel' | 'csv') => {
+    if (format === 'excel') {
+      window.open('http://localhost:8000/api/exports/medical-report/excel?user_id=1', '_blank');
+    } else {
+      window.open('http://localhost:8000/api/exports/medical-report/csv?user_id=1&report_type=weight', '_blank');
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Weight Tracker</h1>
-        <p className="mt-1 text-sm text-gray-500">Monitor your progress over time</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Weight Tracker</h1>
+          <p className="mt-1 text-sm text-gray-500">Monitor your progress over time</p>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleExport('csv')}
+            className="px-4 py-2 bg-secondary text-white rounded-md hover:bg-green-600 transition-colors text-sm"
+          >
+            Download CSV
+          </button>
+          <button
+            onClick={() => handleExport('excel')}
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
+          >
+            Download Full Report
+          </button>
+        </div>
       </div>
 
       {/* Stats Cards */}

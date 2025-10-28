@@ -66,4 +66,44 @@ export const api = {
     if (!res.ok) throw new Error('Failed to fetch foods');
     return res.json();
   },
+
+  // Library
+  async searchPubMed(query: string, maxResults: number = 20) {
+    const res = await fetch(`${API_URL}/library/search?query=${encodeURIComponent(query)}&max_results=${maxResults}`);
+    if (!res.ok) throw new Error('Failed to search PubMed');
+    return res.json();
+  },
+
+  async getSavedStudies(foodName?: string) {
+    const url = foodName
+      ? `${API_URL}/library/saved?food_name=${encodeURIComponent(foodName)}`
+      : `${API_URL}/library/saved`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Failed to fetch saved studies');
+    return res.json();
+  },
+
+  async saveStudy(study: any) {
+    const res = await fetch(`${API_URL}/library/save`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(study),
+    });
+    if (!res.ok) throw new Error('Failed to save study');
+    return res.json();
+  },
+
+  async deleteStudy(pubmedId: string) {
+    const res = await fetch(`${API_URL}/library/${pubmedId}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error('Failed to delete study');
+    return res.json();
+  },
+
+  async getLibraryStats() {
+    const res = await fetch(`${API_URL}/library/stats`);
+    if (!res.ok) throw new Error('Failed to fetch library stats');
+    return res.json();
+  },
 };
