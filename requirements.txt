@@ -1,5 +1,11 @@
-# Cancer Fighting Foods Protocol Generator
+# Cancer Fighting Foods Protocol Generator - No Colon Still Rollin'
 # Python 3.10+
+
+# Web Framework
+fastapi>=0.115.6
+uvicorn[standard]>=0.34.0
+python-multipart>=0.0.20
+pydantic>=2.10.6
 
 # PubMed/Research Access
 biopython>=1.81
