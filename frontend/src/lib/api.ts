@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:8000/api';
+// Use relative URL - Vite proxy will forward to backend
+const API_URL = '/api';
 
 export const api = {
   // Status/Dashboard

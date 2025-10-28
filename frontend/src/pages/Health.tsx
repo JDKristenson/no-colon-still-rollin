@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = '/api';
 
 // Available tags for stool tracking
 const AVAILABLE_TAGS = [

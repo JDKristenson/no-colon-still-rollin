@@ -54,9 +54,9 @@ export default function Weight() {
 
   const handleExport = (format: 'excel' | 'csv') => {
     if (format === 'excel') {
-      window.open('http://localhost:8000/api/exports/medical-report/excel?user_id=1', '_blank');
+      window.open('/api/exports/medical-report/excel?user_id=1', '_blank');
     } else {
-      window.open('http://localhost:8000/api/exports/medical-report/csv?user_id=1&report_type=weight', '_blank');
+      window.open('/api/exports/medical-report/csv?user_id=1&report_type=weight', '_blank');
     }
   };
 
