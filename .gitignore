@@ -18,6 +18,13 @@ data/*.sqlite
 data/*.csv
 reports/*.pdf
 reports/*.html
+backend/app/core/data/*.db
+backend/app/core/data/*.sqlite
+backend/app/core/data/health_photos/
+backend/app/core/reports/
+
+# Health photos contain PHI
+**/health_photos/
 
 # IDE
 .vscode/
@@ -35,3 +42,8 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+
+# Node (frontend)
+node_modules/
+frontend/dist/
+frontend/.vite/

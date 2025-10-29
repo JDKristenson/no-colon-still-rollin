@@ -2,11 +2,12 @@
 import sys
 import os
 import sqlite3
+from pathlib import Path
 
-# Add the backend directory to the path
-backend_dir = '/Users/JDKristenson/Desktop/Manual Library/No Colon Still Rollin/backend'
-sys.path.insert(0, backend_dir)
-sys.path.insert(0, os.path.join(backend_dir, 'app', 'core'))
+# Add the backend directory to the path (relative to this script)
+backend_dir = Path(__file__).parent.resolve()
+sys.path.insert(0, str(backend_dir))
+sys.path.insert(0, str(backend_dir / 'app' / 'core'))
 
 from config import DATABASE_PATH
 

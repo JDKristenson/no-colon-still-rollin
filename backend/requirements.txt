@@ -18,5 +18,8 @@ sqlalchemy>=2.0.0
 python-dotenv>=1.0.0
 python-dateutil>=2.8.0
 
+# Database drivers
+psycopg2-binary>=2.9.0  # PostgreSQL support for production (Vercel)
+
 # Additional
 aiofiles>=23.2.1

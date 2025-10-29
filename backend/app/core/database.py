@@ -1,30 +1,56 @@
 """
 Database setup and operations for No Colon, Still Rollin'
-Using SQLAlchemy with SQLite
+Using SQLite with sqlite3
 """
 import sqlite3
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 import json
+import logging
 
-from config import DATABASE_PATH
+from app.core.config import DATABASE_PATH
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 
 class Database:
     """Database manager for the application"""
 
-    def __init__(self, db_path: str = DATABASE_PATH):
-        self.db_path = db_path
+    def __init__(self, db_path: str = None):
+        """
+        Initialize database connection
+
+        Args:
+            db_path: Path to database file. If None, uses DATABASE_PATH from config
+        """
+        self.db_path = db_path or DATABASE_PATH
         self.conn = None
-        self._ensure_database_exists()
+        try:
+            self._ensure_database_exists()
+            logger.info(f"Database initialized at: {self.db_path}")
+        except Exception as e:
+            logger.error(f"Failed to initialize database: {e}")
+            raise
 
     def _ensure_database_exists(self):
         """Create database and tables if they don't exist"""
-        Path(self.db_path).parent.mkdir(parents=True, exist_ok=True)
-        self.conn = sqlite3.connect(self.db_path)
-        self.conn.row_factory = sqlite3.Row  # Return rows as dictionaries
-        self._create_tables()
+        try:
+            # Ensure directory exists
+            db_dir = Path(self.db_path).parent
+            db_dir.mkdir(parents=True, exist_ok=True)
+
+            # Connect to database (creates file if it doesn't exist)
+            self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
+            self.conn.row_factory = sqlite3.Row  # Return rows as dictionaries
+
+            # Create all tables
+            self._create_tables()
+
+        except Exception as e:
+            logger.error(f"Error ensuring database exists: {e}")
+            raise
 
     def _create_tables(self):
         """Create all necessary tables"""
@@ -180,7 +206,7 @@ class Database:
             )
         """)
 
-        # Health photos table
+        # Health photos table (with Phase 2 columns)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS health_photos (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -190,6 +216,8 @@ class Database:
                 filename TEXT NOT NULL,
                 file_path TEXT NOT NULL,
                 notes TEXT,
+                tags TEXT DEFAULT '[]',
+                archived BOOLEAN DEFAULT 0,
                 uploaded_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users (id)
             )
@@ -219,6 +247,57 @@ class Database:
         cursor.execute("""
             CREATE INDEX IF NOT EXISTS idx_health_photos_user_date
             ON health_photos(user_id, date)
+        """)
+
+        # Phase 2 Tables: Medication log
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS medication_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                medication_id INTEGER NOT NULL,
+                date TEXT NOT NULL,
+                time TEXT NOT NULL,
+                dosage TEXT,
+                taken BOOLEAN DEFAULT 1,
+                notes TEXT,
+                logged_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id),
+                FOREIGN KEY (medication_id) REFERENCES medications (id)
+            )
+        """)
+
+        cursor.execute("""
+            CREATE INDEX IF NOT EXISTS idx_medication_log_user_date
+            ON medication_log(user_id, date)
+        """)
+
+        # Phase 2 Tables: Hydration log
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS hydration_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                date TEXT NOT NULL,
+                time TEXT NOT NULL,
+                amount_oz REAL DEFAULT 8.0,
+                logged_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id)
+            )
+        """)
+
+        cursor.execute("""
+            CREATE INDEX IF NOT EXISTS idx_hydration_log_user_date
+            ON hydration_log(user_id, date)
+        """)
+
+        # Phase 2 Tables: Hydration goals
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS hydration_goals (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL UNIQUE,
+                daily_goal_oz REAL DEFAULT 64.0,
+                updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id)
+            )
         """)
 
         self.conn.commit()

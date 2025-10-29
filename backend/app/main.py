@@ -7,6 +7,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import os
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 # Create FastAPI app
 app = FastAPI(
@@ -17,6 +25,41 @@ app = FastAPI(
     redoc_url="/api/redoc",
     openapi_url="/api/openapi.json"
 )
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database and seed data on startup"""
+    try:
+        logger.info("Starting application initialization...")
+
+        # Import here to avoid circular dependencies
+        from app.core.database import Database
+        from app.core.init_database import seed_foods, create_jesse_user
+
+        # Initialize database (creates tables if they don't exist)
+        db = Database()
+        logger.info("Database connection established")
+
+        # Check if database needs seeding (check if foods table is empty)
+        cursor = db.conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM foods")
+        food_count = cursor.fetchone()[0]
+
+        if food_count == 0:
+            logger.info("Database is empty. Seeding initial data...")
+            seed_foods(db)
+            create_jesse_user(db)
+            logger.info("Database seeding complete")
+        else:
+            logger.info(f"Database already contains {food_count} foods")
+
+        db.close()
+        logger.info("Application initialization complete")
+
+    except Exception as e:
+        logger.error(f"Error during startup: {e}")
+        # Don't fail startup - allow the app to run even if seeding fails
+        # The database tables will still be created
 
 # CORS middleware for development
 origins = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")

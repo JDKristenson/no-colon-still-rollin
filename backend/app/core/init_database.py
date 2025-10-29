@@ -3,7 +3,7 @@ Initialize database with Jesse's anti-cancer foods
 Seed with known foods and their properties
 """
 from datetime import datetime
-from database import Database
+from app.core.database import Database
 
 
 def seed_foods(db: Database):

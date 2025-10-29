@@ -5,22 +5,39 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from project root
+# Look for .env file in the project root (3 levels up from this file)
+env_path = Path(__file__).parent.parent.parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
-# Project paths
-PROJECT_ROOT = Path(__file__).parent.parent
-DATA_DIR = PROJECT_ROOT / "core" / "data"
-REPORTS_DIR = PROJECT_ROOT / "core" / "reports"
-SRC_DIR = PROJECT_ROOT / "core" / "src"
+# Project paths - relative to the backend directory
+PROJECT_ROOT = Path(__file__).parent.parent.parent  # Points to backend/
+DATA_DIR = PROJECT_ROOT / "app" / "core" / "data"
+REPORTS_DIR = PROJECT_ROOT / "app" / "core" / "reports"
 
 # Ensure directories exist
-DATA_DIR.mkdir(exist_ok=True)
-REPORTS_DIR.mkdir(exist_ok=True)
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
-# Database
-# Use absolute path to ensure we always connect to the right database
-DATABASE_PATH = str(DATA_DIR / "cancer_foods.db")
+# Database configuration
+# Support both SQLite (local/Replit) and PostgreSQL (Vercel)
+
+# PostgreSQL connection for production (Vercel, etc.)
+DATABASE_URL = os.getenv("DATABASE_URL", "")  # PostgreSQL connection string
+
+# SQLite path for local/Replit
+DATABASE_PATH = os.getenv("DATABASE_PATH")
+if DATABASE_PATH:
+    # If DATABASE_PATH is relative, make it relative to project root
+    db_path = Path(DATABASE_PATH)
+    if not db_path.is_absolute():
+        DATABASE_PATH = str(PROJECT_ROOT.parent / DATABASE_PATH)
+else:
+    # Default location for local development
+    DATABASE_PATH = str(DATA_DIR / "cancer_foods.db")
+
+# Database type detection
+DATABASE_TYPE = "postgresql" if DATABASE_URL else "sqlite"
 
 # NCBI/PubMed API
 NCBI_EMAIL = os.getenv("NCBI_EMAIL", "")
