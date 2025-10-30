@@ -5,10 +5,10 @@ entrypoint = "backend/app/main.py"
 channel = "stable-23_11"
 
 [deployment]
-build = ["sh", "-c", "cd frontend && npm install"]
-run = ["bash", "start.sh"]
+build = ["sh", "-c", "cd frontend && npm install && npm run build"]
+run = ["sh", "-c", "cd backend && python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000"]
 deploymentTarget = "cloudrun"
 
 [[ports]]
-localPort = 5173
+localPort = 8000
 externalPort = 80

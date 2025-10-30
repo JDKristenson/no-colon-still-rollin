@@ -2,7 +2,7 @@
   deps = [
     pkgs.python310Full
     pkgs.python310Packages.pip
-    pkgs.nodejs_20
+    pkgs.nodejs_22
     pkgs.nodePackages.npm
   ];
 }

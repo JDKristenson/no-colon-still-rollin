@@ -27,28 +27,38 @@ No Colon, Still Rollin' is deployed using:
 
 ## Replit Deployment
 
+Replit uses Cloud Run (single-server deployment) where the backend serves the built frontend as static files.
+
 1. **Import from GitHub:**
    - Go to Replit.com
    - Click "Create Repl" > "Import from GitHub"
-   - Enter repository URL
+   - Enter repository URL: `https://github.com/JDKristenson/no-colon-still-rollin.git`
 
-2. **Configure .replit file:**
-   ```toml
-   run = "bash start.sh"
+2. **Configuration (already set in repo):**
+   - `replit.nix`: Uses Node.js 22 and Python 3.10
+   - `.replit` deployment:
+     - **Build**: Installs frontend deps and builds frontend to `frontend/dist`
+     - **Run**: Starts backend only (backend serves built frontend automatically)
+   - Development mode: `bash start.sh` runs both servers for live editing
 
-   [deployment]
-   run = ["bash", "start.sh"]
-   deploymentTarget = "cloudrun"
-   ```
+3. **How it works:**
+   - **Development (Run button)**: Backend on port 8000, Frontend dev server on port 5173
+   - **Production (Deploy button)**:
+     - Build step: `cd frontend && npm install && npm run build`
+     - Frontend builds to `frontend/dist`
+     - Backend starts and automatically serves built frontend
+     - Single server on port 8000 handles both API and frontend
+     - Health check: `GET /health` returns 200 OK
 
-3. **Set environment variables:**
+4. **Set environment variables:**
    - `NCBI_EMAIL`: Your email for PubMed API
    - `NCBI_API_KEY`: (optional) PubMed API key for higher rate limits
 
-4. **Deploy:**
-   - Click "Run" to test locally
-   - Click "Deploy" for production
+5. **Deploy:**
+   - Click "Run" to test locally (both servers)
+   - Click "Deploy" for production (single server + built frontend)
    - SQLite database persists in Replit's filesystem
+   - No additional database setup needed!
 
 ## Vercel Deployment
 
