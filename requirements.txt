@@ -1,37 +1,26 @@
-# Cancer Fighting Foods Protocol Generator - No Colon Still Rollin'
-# Python 3.10+
+# FastAPI Backend Requirements
+# No Colon Still Rollin' - Anti-Cancer Food Protocol System
 
-# Web Framework
-fastapi>=0.115.6
-uvicorn[standard]>=0.34.0
-python-multipart>=0.0.20
-pydantic>=2.10.6
+# FastAPI & Server
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
 
-# PubMed/Research Access
+# Pydantic for validation
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Core dependencies
 biopython>=1.81
 requests>=2.31.0
-
-# Data Processing
 pandas>=2.0.0
 numpy>=1.24.0
-
-# Database
 sqlalchemy>=2.0.0
-
-# Environment & Config
 python-dotenv>=1.0.0
-
-# Report Generation
-reportlab>=4.0.0
-jinja2>=3.1.0
-
-# Date/Time
 python-dateutil>=2.8.0
 
-# Testing
-pytest>=7.4.0
-pytest-cov>=4.1.0
+# Database drivers
+psycopg2-binary>=2.9.0  # PostgreSQL support for production (Vercel)
 
-# Drug Interaction Checking
-beautifulsoup4>=4.12.0
-lxml>=4.9.0
+# Additional
+aiofiles>=23.2.1
