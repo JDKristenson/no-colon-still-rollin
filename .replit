@@ -2,7 +2,7 @@ run = "bash start.sh"
 entrypoint = "backend/app/main.py"
 
 [nix]
-channel = "stable-23_11"
+channel = "stable-24_05"
 
 [deployment]
 build = ["sh", "-c", "cd frontend && npm install && npm run build"]
