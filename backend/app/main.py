@@ -107,10 +107,39 @@ def health_check():
         "message": "No Colon, Still Rollin'"
     }
 
+# Root endpoint - useful when frontend isn't built yet
+@app.get("/")
+def root():
+    """Root endpoint that redirects to docs or shows status"""
+    frontend_dist = Path(__file__).parent.parent.parent / "frontend" / "dist"
+
+    if not frontend_dist.exists():
+        return {
+            "message": "No Colon, Still Rollin' API",
+            "version": "2.0.0",
+            "status": "Backend is running",
+            "frontend": "Not built - run 'cd frontend && npm install && npm run build'",
+            "endpoints": {
+                "health": "/health",
+                "api_docs": "/api/docs",
+                "redoc": "/api/redoc"
+            },
+            "note": "Frontend should be built during deployment. If you're seeing this in production, the build step may have failed."
+        }
+
+    # If frontend is built, this won't be reached (static files will be served instead)
+    return {
+        "message": "No Colon, Still Rollin'",
+        "version": "2.0.0"
+    }
+
 # Serve frontend static files in production
 frontend_dist = Path(__file__).parent.parent.parent / "frontend" / "dist"
 if frontend_dist.exists():
+    logger.info(f"Mounting frontend static files from {frontend_dist}")
     app.mount("/", StaticFiles(directory=str(frontend_dist), html=True), name="static")
+else:
+    logger.warning(f"Frontend dist directory not found at {frontend_dist}. Serving API only.")
 
 if __name__ == "__main__":
     import uvicorn
