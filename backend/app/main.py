@@ -61,12 +61,24 @@ async def startup_event():
         # Don't fail startup - allow the app to run even if seeding fails
         # The database tables will still be created
 
-# CORS middleware for development
-origins = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
+# CORS middleware - allow development and Replit domains
+origins_env = os.getenv("CORS_ORIGINS", "")
+if origins_env:
+    origins = origins_env.split(",")
+else:
+    # Default: local development + Replit domains
+    origins = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://*.replit.dev",
+        "https://*.replit.app",
+        "https://*.repl.co"
+    ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+    allow_origin_regex=r"https://.*\.replit\.(dev|app|co)",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -102,4 +114,5 @@ if frontend_dist.exists():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("PORT", "8000"))
+    uvicorn.run(app, host="0.0.0.0", port=port)

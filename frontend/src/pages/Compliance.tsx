@@ -30,7 +30,7 @@ export default function Compliance() {
     }));
   };
 
-  const allFoodsChecked = protocol?.foods.every(food => checkedFoods[food.name]) || false;
+  const allFoodsChecked = protocol?.foods.every((food: Food) => checkedFoods[food.name]) || false;
   const checkedCount = Object.values(checkedFoods).filter(Boolean).length;
   const totalCount = protocol?.foods.length || 0;
   const completionPercent = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
@@ -124,7 +124,7 @@ export default function Compliance() {
           <div className="bg-white shadow rounded-lg p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Today's Foods</h2>
             <div className="space-y-3">
-              {protocol.foods.map((food) => (
+              {protocol.foods.map((food: Food) => (
                 <label
                   key={food.name}
                   className="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"

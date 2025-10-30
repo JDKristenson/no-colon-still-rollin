@@ -168,7 +168,8 @@ export default function MealPlanner() {
   const [selectedMeal, setSelectedMeal] = useState<string | null>(null);
   const [showShoppingList, setShowShoppingList] = useState(false);
 
-  const { data: protocol } = useQuery({
+  // Protocol data available if needed for future features
+  const { data: _protocol } = useQuery({
     queryKey: ['protocol-today'],
     queryFn: api.getTodayProtocol,
     retry: false,

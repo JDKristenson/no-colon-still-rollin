@@ -52,7 +52,7 @@ export default function Protocol() {
 
   const handleGenerate = () => {
     setIsGenerating(true);
-    generateMutation.mutate();
+    generateMutation.mutate(undefined);
   };
 
   if (isLoading) {
