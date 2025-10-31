@@ -3,6 +3,7 @@ from typing import List
 
 class Settings(BaseSettings):
     # Database
+    # Default to Supabase format, can be overridden by environment variable
     DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/nocolon"
     
     # Security

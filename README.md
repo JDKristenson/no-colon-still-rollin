@@ -107,14 +107,19 @@ Frontend runs at: http://localhost:5173
 
 ## 🌐 Deployment
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
+**Recommended: Supabase + Vercel + Railway**
 
-### Quick Deploy to Vercel
+See [DEPLOYMENT_SUPABASE.md](./DEPLOYMENT_SUPABASE.md) for detailed Supabase deployment instructions.
 
-1. Connect GitHub repo to Vercel
-2. Set environment variables (DATABASE_URL, SECRET_KEY)
-3. Deploy frontend (root: `frontend`)
-4. Deploy backend (root: `backend`) or use Railway/Render
+### Quick Setup
+
+1. **Supabase**: Create project, get connection string
+2. **Railway/Render**: Deploy backend, set DATABASE_URL to Supabase
+3. **Vercel**: Deploy frontend, set VITE_API_URL to backend URL
+4. Run migrations: `alembic upgrade head`
+5. Seed database: `python scripts/seed_database.py`
+
+For alternative deployment methods, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 ## 📊 Database
 
