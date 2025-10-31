@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
+import Protocol from './pages/Protocol'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const queryClient = new QueryClient({
@@ -29,6 +30,7 @@ function App() {
                 <ProtectedRoute>
                   <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/protocol" element={<Protocol />} />
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                   </Routes>
                 </ProtectedRoute>
