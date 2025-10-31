@@ -1,0 +1,487 @@
+[
+  {
+    "name": "Push-ups",
+    "description": "Classic bodyweight chest exercise",
+    "muscle_group_primary": "chest",
+    "muscle_groups_secondary": ["shoulders", "core", "arms"],
+    "equipment_required": [],
+    "difficulty_level": 2,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Keep core tight throughout movement",
+      "Lower until chest nearly touches ground",
+      "Press up explosively but controlled",
+      "Maintain straight line from head to heels"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": null
+  },
+  {
+    "name": "Dumbbell Bench Press",
+    "description": "Chest strength builder with dumbbells",
+    "muscle_group_primary": "chest",
+    "muscle_groups_secondary": ["shoulders", "arms"],
+    "equipment_required": ["dumbbells", "bench"],
+    "difficulty_level": 3,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Control the descent - 2-3 seconds",
+      "Press up explosively",
+      "Keep feet flat on floor",
+      "Don't arch back excessively"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 10,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 20
+  },
+  {
+    "name": "Dumbbell Flyes",
+    "description": "Isolation exercise for chest",
+    "muscle_group_primary": "chest",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["dumbbells", "bench"],
+    "difficulty_level": 3,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Slight bend in elbows throughout",
+      "Squeeze at top of movement",
+      "Feel stretch in chest at bottom",
+      "Control the movement"
+    ],
+    "video_url": null,
+    "default_sets": 2,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 15
+  },
+  {
+    "name": "Dumbbell Rows",
+    "description": "Back strength builder",
+    "muscle_group_primary": "back",
+    "muscle_groups_secondary": ["arms"],
+    "equipment_required": ["dumbbells", "bench"],
+    "difficulty_level": 3,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Keep back straight",
+      "Pull to lower ribcage",
+      "Squeeze shoulder blades together",
+      "Control the weight down"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 20
+  },
+  {
+    "name": "Reverse Flyes",
+    "description": "Targets rear delts and upper back",
+    "muscle_group_primary": "back",
+    "muscle_groups_secondary": ["shoulders"],
+    "equipment_required": ["dumbbells"],
+    "difficulty_level": 3,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Bend forward slightly",
+      "Raise arms out to sides",
+      "Squeeze shoulder blades",
+      "Keep slight bend in elbows"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 10
+  },
+  {
+    "name": "Dumbbell Shoulder Press",
+    "description": "Overhead pressing movement",
+    "muscle_group_primary": "shoulders",
+    "muscle_groups_secondary": ["arms", "core"],
+    "equipment_required": ["dumbbells"],
+    "difficulty_level": 3,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Press straight up, not forward",
+      "Core stays tight",
+      "Don't arch back excessively",
+      "Control the descent"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 10,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 15
+  },
+  {
+    "name": "Lateral Raises",
+    "description": "Isolation for side delts",
+    "muscle_group_primary": "shoulders",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["dumbbells"],
+    "difficulty_level": 2,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Slight bend in elbows",
+      "Raise to shoulder height",
+      "Control the descent",
+      "Don't swing or use momentum"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 15,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 10
+  },
+  {
+    "name": "Front Raises",
+    "description": "Targets front delts",
+    "muscle_group_primary": "shoulders",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["dumbbells"],
+    "difficulty_level": 2,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Raise to shoulder height",
+      "Control the descent",
+      "Keep slight bend in elbows",
+      "Don't swing"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 10
+  },
+  {
+    "name": "Squats",
+    "description": "King of leg exercises",
+    "muscle_group_primary": "legs",
+    "muscle_groups_secondary": ["core"],
+    "equipment_required": [],
+    "difficulty_level": 3,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Feet shoulder-width apart",
+      "Lower until thighs parallel to floor",
+      "Knees track over toes",
+      "Keep chest up",
+      "Drive through heels"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 15,
+    "default_duration_seconds": null,
+    "default_weight_lbs": null
+  },
+  {
+    "name": "Lunges",
+    "description": "Single-leg strength builder",
+    "muscle_group_primary": "legs",
+    "muscle_groups_secondary": ["core"],
+    "equipment_required": [],
+    "difficulty_level": 3,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Step forward into lunge",
+      "Front knee over ankle",
+      "Back knee nearly touches ground",
+      "Drive through front heel to return",
+      "Alternate legs"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": null
+  },
+  {
+    "name": "Dumbbell Lunges",
+    "description": "Lunges with added resistance",
+    "muscle_group_primary": "legs",
+    "muscle_groups_secondary": ["core"],
+    "equipment_required": ["dumbbells"],
+    "difficulty_level": 4,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Hold dumbbells at sides",
+      "Step forward into lunge",
+      "Drive through front heel",
+      "Keep torso upright"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 10,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 15
+  },
+  {
+    "name": "Leg Curls (Dumbbell)",
+    "description": "Hamstring isolation",
+    "muscle_group_primary": "legs",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["dumbbell"],
+    "difficulty_level": 3,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Lie face down on bench",
+      "Curl dumbbell with feet",
+      "Squeeze hamstrings at top",
+      "Control the descent"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 10
+  },
+  {
+    "name": "Step-ups",
+    "description": "Functional leg exercise",
+    "muscle_group_primary": "legs",
+    "muscle_groups_secondary": ["core"],
+    "equipment_required": ["bench"],
+    "difficulty_level": 2,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Step up onto bench",
+      "Drive through heel",
+      "Stand fully on bench",
+      "Step down controlled",
+      "Alternate legs"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": null
+  },
+  {
+    "name": "Plank Hold",
+    "description": "Core stability exercise",
+    "muscle_group_primary": "core",
+    "muscle_groups_secondary": [],
+    "equipment_required": [],
+    "difficulty_level": 2,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Straight line from head to heels",
+      "Engage core",
+      "Don't let hips sag",
+      "Breathe normally"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": null,
+    "default_duration_seconds": 45,
+    "default_weight_lbs": null
+  },
+  {
+    "name": "Russian Twists",
+    "description": "Rotational core strength",
+    "muscle_group_primary": "core",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["dumbbell"],
+    "difficulty_level": 3,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Rotate through core, not just arms",
+      "Keep chest up",
+      "Feel rotation in obliques",
+      "Control the movement"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 20,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 10
+  },
+  {
+    "name": "Leg Raises",
+    "description": "Lower ab strength",
+    "muscle_group_primary": "core",
+    "muscle_groups_secondary": [],
+    "equipment_required": [],
+    "difficulty_level": 3,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Lie on back",
+      "Raise legs to 90 degrees",
+      "Lower slowly with control",
+      "Keep lower back pressed to floor"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 15,
+    "default_duration_seconds": null,
+    "default_weight_lbs": null
+  },
+  {
+    "name": "Bicycle Crunches",
+    "description": "Core rotation and strength",
+    "muscle_group_primary": "core",
+    "muscle_groups_secondary": [],
+    "equipment_required": [],
+    "difficulty_level": 2,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Alternate touching elbow to opposite knee",
+      "Keep core engaged",
+      "Don't pull on neck",
+      "Feel rotation in obliques"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 20,
+    "default_duration_seconds": null,
+    "default_weight_lbs": null
+  },
+  {
+    "name": "Bicep Curls",
+    "description": "Arm isolation",
+    "muscle_group_primary": "arms",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["dumbbells"],
+    "difficulty_level": 2,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Keep elbows at sides",
+      "Curl weight up",
+      "Squeeze at top",
+      "Control the descent"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 15
+  },
+  {
+    "name": "Tricep Extensions",
+    "description": "Tricep isolation",
+    "muscle_group_primary": "arms",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["dumbbell"],
+    "difficulty_level": 3,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Hold dumbbell overhead",
+      "Lower behind head",
+      "Extend arms up",
+      "Keep elbows in"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 15
+  },
+  {
+    "name": "Hammer Curls",
+    "description": "Bicep and brachialis",
+    "muscle_group_primary": "arms",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["dumbbells"],
+    "difficulty_level": 2,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Neutral grip (palms face each other)",
+      "Curl up",
+      "Keep elbows at sides",
+      "Control the descent"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 12,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 15
+  },
+  {
+    "name": "Rotator Cuff External Rotation",
+    "description": "Shoulder health for baseball",
+    "muscle_group_primary": "shoulders",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["dumbbell"],
+    "difficulty_level": 2,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Lie on side",
+      "Bend elbow to 90 degrees",
+      "Rotate arm up",
+      "Keep elbow at side",
+      "Control the movement"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 15,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 5
+  },
+  {
+    "name": "Rotator Cuff Internal Rotation",
+    "description": "Shoulder health for baseball",
+    "muscle_group_primary": "shoulders",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["dumbbell"],
+    "difficulty_level": 2,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Lie on side",
+      "Bend elbow to 90 degrees",
+      "Rotate arm toward body",
+      "Keep elbow at side"
+    ],
+    "video_url": null,
+    "default_sets": 3,
+    "default_reps": 15,
+    "default_duration_seconds": null,
+    "default_weight_lbs": 5
+  },
+  {
+    "name": "Treadmill Run",
+    "description": "Cardio base building",
+    "muscle_group_primary": "legs",
+    "muscle_groups_secondary": ["core"],
+    "equipment_required": ["treadmill"],
+    "difficulty_level": 2,
+    "is_baseball_specific": true,
+    "form_cues": [
+      "Maintain good posture",
+      "Land midfoot",
+      "Stay in zone 2 for base building",
+      "Breathe rhythmically"
+    ],
+    "video_url": null,
+    "default_sets": null,
+    "default_reps": null,
+    "default_duration_seconds": 1800,
+    "default_weight_lbs": null
+  },
+  {
+    "name": "Stationary Bike",
+    "description": "Low-impact cardio",
+    "muscle_group_primary": "legs",
+    "muscle_groups_secondary": [],
+    "equipment_required": ["stationary_bike"],
+    "difficulty_level": 2,
+    "is_baseball_specific": false,
+    "form_cues": [
+      "Maintain steady cadence",
+      "Stay in zone 2",
+      "Keep core engaged",
+      "Adjust resistance as needed"
+    ],
+    "video_url": null,
+    "default_sets": null,
+    "default_reps": null,
+    "default_duration_seconds": 1800,
+    "default_weight_lbs": null
+  }
+]
+
