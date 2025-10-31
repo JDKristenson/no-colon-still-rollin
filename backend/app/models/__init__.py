@@ -1,6 +1,6 @@
 from app.models.user import User
 from app.models.food import Food
-from app.models.protocol import DailyProtocol, ProtocolFood
+from app.models.protocol import DailyProtocol
 from app.models.workout import WorkoutPlan, WorkoutLog, Exercise
 from app.models.soreness import SorenessRecord, MuscleGroup
 from app.models.compliance import ComplianceRecord
@@ -11,7 +11,6 @@ __all__ = [
     "User",
     "Food",
     "DailyProtocol",
-    "ProtocolFood",
     "WorkoutPlan",
     "WorkoutLog",
     "Exercise",
