@@ -8,7 +8,8 @@ import os
 from pathlib import Path
 
 # Add backend to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+backend_path = Path(__file__).parent.parent
+sys.path.insert(0, str(backend_path))
 
 from app.core.config import settings
 from app.core.database import engine, Base
@@ -28,20 +29,27 @@ def main():
         logger.info("✅ Tables created successfully!")
         
         # Also seed data if needed
-        from seed_database import seed_foods, seed_exercises, seed_muscle_groups
-        
-        logger.info("Seeding database...")
-        from sqlalchemy.orm import Session
-        from app.core.database import SessionLocal
-        
-        db = SessionLocal()
-        try:
-            seed_muscle_groups(db)
-            seed_foods(db)
-            seed_exercises(db)
-            logger.info("✅ Database seeded!")
-        finally:
-            db.close()
+        import importlib.util
+        seed_path = Path(__file__).parent / "seed_database.py"
+        if seed_path.exists():
+            spec = importlib.util.spec_from_file_location("seed_database", seed_path)
+            seed_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(seed_module)
+            
+            logger.info("Seeding database...")
+            from sqlalchemy.orm import Session
+            from app.core.database import SessionLocal
+            
+            db = SessionLocal()
+            try:
+                seed_module.seed_muscle_groups(db)
+                seed_module.seed_foods(db)
+                seed_module.seed_exercises(db)
+                logger.info("✅ Database seeded!")
+            finally:
+                db.close()
+        else:
+            logger.warning("Seed script not found, skipping seeding")
             
     except Exception as e:
         logger.error(f"❌ Error: {e}")
