@@ -11,12 +11,14 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     
-    # CORS
-    CORS_ORIGINS: List[str] = [
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "http://localhost:5174",
-    ]
+    # CORS - can be comma-separated string or list
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://localhost:5174"
+    
+    def get_cors_origins(self) -> List[str]:
+        """Parse CORS_ORIGINS from string to list"""
+        if isinstance(self.CORS_ORIGINS, str):
+            return [origin.strip() for origin in self.CORS_ORIGINS.split(",")]
+        return self.CORS_ORIGINS if isinstance(self.CORS_ORIGINS, list) else []
     
     # App
     PROJECT_NAME: str = "No Colon, Still Rollin'"
