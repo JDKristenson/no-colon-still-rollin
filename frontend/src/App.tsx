@@ -5,6 +5,8 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Protocol from './pages/Protocol'
+import Workouts from './pages/Workouts'
+import Soreness from './pages/Soreness'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const queryClient = new QueryClient({
@@ -31,6 +33,8 @@ function App() {
                   <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/protocol" element={<Protocol />} />
+                    <Route path="/workouts" element={<Workouts />} />
+                    <Route path="/soreness" element={<Soreness />} />
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                   </Routes>
                 </ProtectedRoute>
