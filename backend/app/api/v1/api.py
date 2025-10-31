@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import auth, dashboard, protocol, workouts, soreness, compliance, weight, coaching
+from app.api.v1.endpoints import auth, dashboard, protocol, workouts, soreness, compliance, weight, coaching, research, export
 
 api_router = APIRouter()
 
@@ -11,4 +11,6 @@ api_router.include_router(soreness.router, prefix="/soreness", tags=["soreness"]
 api_router.include_router(compliance.router, prefix="/compliance", tags=["compliance"])
 api_router.include_router(weight.router, prefix="/weight", tags=["weight"])
 api_router.include_router(coaching.router, prefix="/coaching", tags=["coaching"])
+api_router.include_router(research.router, prefix="/research", tags=["research"])
+api_router.include_router(export.router, prefix="/export", tags=["export"])
 
