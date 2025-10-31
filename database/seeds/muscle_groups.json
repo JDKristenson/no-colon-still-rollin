@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Chest",
+    "recovery_time_hours": 48,
+    "description": "Pectoralis major and minor"
+  },
+  {
+    "name": "Back",
+    "recovery_time_hours": 72,
+    "description": "Latissimus dorsi, rhomboids, traps, erector spinae"
+  },
+  {
+    "name": "Shoulders",
+    "recovery_time_hours": 48,
+    "description": "Deltoids, rotator cuff muscles"
+  },
+  {
+    "name": "Legs",
+    "recovery_time_hours": 72,
+    "description": "Quadriceps, hamstrings, glutes, calves"
+  },
+  {
+    "name": "Core",
+    "recovery_time_hours": 48,
+    "description": "Rectus abdominis, obliques, transverse abdominis"
+  },
+  {
+    "name": "Arms",
+    "recovery_time_hours": 48,
+    "description": "Biceps, triceps, forearms"
+  }
+]
+
