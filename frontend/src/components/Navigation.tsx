@@ -28,7 +28,7 @@ export default function Navigation() {
             </h1>
           </div>
           
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 overflow-x-auto">
             {navItems.map((item) => {
               const Icon = item.icon
               const isActive = location.pathname === item.path
@@ -41,10 +41,11 @@ export default function Navigation() {
                   >
                     <Button
                       variant={isActive ? "default" : "ghost"}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 whitespace-nowrap"
+                      size="sm"
                     >
                       <Icon size={18} />
-                      <span className="hidden md:inline">{item.label}</span>
+                      <span className="hidden lg:inline">{item.label}</span>
                     </Button>
                   </motion.div>
                 </Link>
@@ -54,10 +55,11 @@ export default function Navigation() {
             <Button
               variant="ghost"
               onClick={logout}
-              className="flex items-center gap-2 text-red-600 hover:text-red-700"
+              className="flex items-center gap-2 text-red-600 hover:text-red-700 whitespace-nowrap"
+              size="sm"
             >
               <LogOut size={18} />
-              <span className="hidden md:inline">Logout</span>
+              <span className="hidden lg:inline">Logout</span>
             </Button>
           </div>
         </div>

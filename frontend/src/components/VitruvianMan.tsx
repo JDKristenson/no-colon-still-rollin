@@ -35,12 +35,12 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
   const [hoveredMuscle, setHoveredMuscle] = useState<string | null>(null)
 
   const muscleGroups = [
-    { name: 'chest', label: 'Chest', path: 'chest', position: { x: 50, y: 35 } },
-    { name: 'back', label: 'Back', path: 'back', position: { x: 50, y: 35 } },
-    { name: 'shoulders', label: 'Shoulders', path: 'shoulders', position: { x: 50, y: 28 } },
-    { name: 'legs', label: 'Legs', path: 'legs', position: { x: 50, y: 70 } },
-    { name: 'core', label: 'Core', path: 'core', position: { x: 50, y: 50 } },
-    { name: 'arms', label: 'Arms', path: 'arms', position: { x: 50, y: 40 } },
+    { name: 'chest', label: 'Chest', position: { x: 50, y: 35 } },
+    { name: 'back', label: 'Back', position: { x: 50, y: 35 } },
+    { name: 'shoulders', label: 'Shoulders', position: { x: 50, y: 28 } },
+    { name: 'legs', label: 'Legs', position: { x: 50, y: 70 } },
+    { name: 'core', label: 'Core', position: { x: 50, y: 50 } },
+    { name: 'arms', label: 'Arms', position: { x: 50, y: 40 } },
   ]
 
   const handleMuscleHover = (muscle: string) => {
@@ -298,7 +298,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
             transition={{ duration: 0.2 }}
           >
             <rect
-              x={muscleGroups.find(m => m.name === hoveredMuscle)?.position.x || 200}
+              x={(muscleGroups.find(m => m.name === hoveredMuscle)?.position.x || 200) - 40}
               y={(muscleGroups.find(m => m.name === hoveredMuscle)?.position.y || 200) - 40}
               width="80"
               height="30"
@@ -342,4 +342,3 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
     </div>
   )
 }
-

@@ -24,6 +24,10 @@ api.interceptors.response.use(
       localStorage.removeItem('token')
       window.location.href = '/login'
     }
+    // Log error for debugging
+    if (error.response?.status >= 500) {
+      console.error('Server error:', error.response?.data)
+    }
     return Promise.reject(error)
   }
 )
