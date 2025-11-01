@@ -11,9 +11,8 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from sqlalchemy.orm import Session
-from app.core.database import SessionLocal, engine
+from app.core.database import SessionLocal, engine, Base
 from app.models import *
-from app.core.database import Base
 from app.core.security import get_password_hash
 
 def seed_foods(db: Session):
@@ -106,8 +105,7 @@ def main():
     """Run all seeding functions"""
     print("Starting database seeding...")
     
-    # Create tables
-    from app.models import Base
+    # Ensure tables exist (migrations should have created them)
     Base.metadata.create_all(bind=engine)
     
     db = SessionLocal()
