@@ -4,7 +4,7 @@ import api from '@/lib/api'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Navigation from '@/components/Navigation'
-import { Search, Filter, Play, Info } from 'lucide-react'
+import { Search, Filter, Info } from 'lucide-react'
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 

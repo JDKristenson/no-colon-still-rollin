@@ -8,7 +8,7 @@ import Navigation from '@/components/Navigation'
 import VitruvianMan from '@/components/VitruvianMan'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertTriangle, CheckCircle, Zap } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Soreness() {
   const queryClient = useQueryClient()
@@ -21,18 +21,23 @@ export default function Soreness() {
     arms: 0,
   })
   
-  const { data: currentSoreness, isLoading } = useQuery({
+  const { data: currentSoreness, isLoading } = useQuery<{
+    muscle_groups?: Record<string, number>;
+    coverage_percentage?: number;
+    detailed_state?: Array<{ name: string; status: string }>;
+  }>({
     queryKey: ['soreness-current'],
     queryFn: async () => {
       const response = await api.get('/soreness/current')
       return response.data
     },
-    onSuccess: (data) => {
-      if (data.muscle_groups) {
-        setSorenessValues(data.muscle_groups)
-      }
-    },
   })
+
+  useEffect(() => {
+    if (currentSoreness?.muscle_groups) {
+      setSorenessValues(currentSoreness.muscle_groups)
+    }
+  }, [currentSoreness])
   
   const { data: coverageWarning } = useQuery({
     queryKey: ['soreness-coverage-warning'],
@@ -191,7 +196,7 @@ export default function Soreness() {
               <CardContent>
                 <VitruvianMan
                   soreness={sorenessValues}
-                  onMuscleClick={(muscle) => {
+                  onMuscleClick={() => {
                     // Could open slider for that muscle group
                   }}
                 />

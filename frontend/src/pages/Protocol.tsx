@@ -4,7 +4,7 @@ import api from '@/lib/api'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Navigation from '@/components/Navigation'
-import { Check, X, RefreshCw, ShoppingCart, UtensilsCrossed } from 'lucide-react'
+import { Check, RefreshCw, ShoppingCart, UtensilsCrossed } from 'lucide-react'
 import { useState } from 'react'
 
 export default function Protocol() {
@@ -85,7 +85,6 @@ export default function Protocol() {
   }
 
   const foods = protocol?.foods || []
-  const adherence = compliance?.nutrition_adherence || 0
   const completionPercentage = foods.length > 0 ? (checkedFoods.length / foods.length) * 100 : 0
 
   return (

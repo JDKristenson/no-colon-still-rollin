@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import Navigation from '@/components/Navigation'
-import { Check, Play, Clock, Dumbbell, Target, Info } from 'lucide-react'
+import { Check, Clock, Dumbbell, Target, Info } from 'lucide-react'
 import { useState } from 'react'
 
 export default function Workouts() {
