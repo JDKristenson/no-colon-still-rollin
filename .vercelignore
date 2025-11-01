@@ -1,0 +1,9 @@
+backend/
+*.py
+__pycache__/
+*.pyc
+venv/
+env/
+.env
+alembic/
+database/
