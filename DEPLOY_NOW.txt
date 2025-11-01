@@ -1,0 +1,43 @@
+═══════════════════════════════════════════════════════════════
+⚡ INSTANT DEPLOYMENT - 3 MINUTES
+═══════════════════════════════════════════════════════════════
+
+RAILWAY BACKEND (90 sec):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. https://railway.app/new
+   → Deploy from GitHub → no-colon-still-rollin
+   
+2. Settings → Root Directory: backend
+   → Start: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
+3. Variables → Add:
+   DATABASE_URL = postgresql://postgres.wpyntnmjncdizglqedyl:2022FreshStart@aws-1-us-east-2.pooler.supabase.com:6543/postgres
+   
+   SECRET_KEY = 0986f53c88aaca014f0fa1c140fd24e7ec5deef9d595652d65c71e7308a7a3e8
+   
+   CORS_ORIGINS = https://your-app.vercel.app,http://localhost:5173
+
+4. Copy Railway URL: ________________________________
+
+VERCEL FRONTEND (60 sec):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. https://vercel.com/new
+   → Import → no-colon-still-rollin
+
+2. Root Directory: frontend
+
+3. Environment Variable:
+   VITE_API_URL = [Railway URL from above]
+
+4. Copy Vercel URL: ________________________________
+
+CONNECT (30 sec):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Railway → Variables → Edit CORS_ORIGINS
+Replace "your-app.vercel.app" with your Vercel URL
+
+TEST:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Visit Vercel URL → Register → Generate Protocol → ✅
+
+═══════════════════════════════════════════════════════════════
