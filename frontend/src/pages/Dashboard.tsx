@@ -8,12 +8,10 @@ import Navigation from '@/components/Navigation'
 import { TrendingUp, TrendingDown, Activity, Target, Zap, Calendar } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import VitruvianMan from '@/components/VitruvianMan'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts'
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts'
 
 export default function Dashboard() {
-  const { user } = useAuth()
-  
-  const { data: dashboardData, isLoading, refetch } = useQuery({
+  const { data: dashboardData, isLoading } = useQuery({
     queryKey: ['dashboard'],
     queryFn: async () => {
       const response = await api.get('/dashboard')

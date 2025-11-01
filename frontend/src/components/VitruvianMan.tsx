@@ -1,17 +1,8 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 
-interface MuscleSoreness {
-  chest: number
-  back: number
-  shoulders: number
-  legs: number
-  core: number
-  arms: number
-}
-
 interface VitruvianManProps {
-  soreness: MuscleSoreness
+  soreness: Record<string, number>
   onMuscleClick?: (muscle: string) => void
   interactive?: boolean
 }
@@ -126,7 +117,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           fill="none"
           animate={{
             stroke: hoveredMuscle === 'arms' || hoveredMuscle === 'shoulders' 
-              ? getSorenessColor(soreness.arms) 
+              ? getSorenessColor(soreness.arms ?? 0) 
               : '#1F2937',
             strokeWidth: hoveredMuscle === 'arms' || hoveredMuscle === 'shoulders' ? 12 : 8,
           }}
@@ -170,7 +161,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           strokeLinecap="round"
           fill="none"
           animate={{
-            stroke: hoveredMuscle === 'legs' ? getSorenessColor(soreness.legs) : '#1F2937',
+            stroke: hoveredMuscle === 'legs' ? getSorenessColor(soreness.legs ?? 0) : '#1F2937',
             strokeWidth: hoveredMuscle === 'legs' ? 14 : 10,
           }}
           transition={{ duration: 0.2 }}
@@ -190,7 +181,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           strokeLinecap="round"
           fill="none"
           animate={{
-            stroke: hoveredMuscle === 'legs' ? getSorenessColor(soreness.legs) : '#1F2937',
+            stroke: hoveredMuscle === 'legs' ? getSorenessColor(soreness.legs ?? 0) : '#1F2937',
             strokeWidth: hoveredMuscle === 'legs' ? 14 : 10,
           }}
           transition={{ duration: 0.2 }}
@@ -206,13 +197,13 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           y="120"
           width="80"
           height="60"
-          fill={getSorenessColor(soreness.chest)}
-          opacity={getSorenessOpacity(soreness.chest)}
+          fill={getSorenessColor(soreness.chest ?? 0)}
+          opacity={getSorenessOpacity(soreness.chest ?? 0)}
           rx="5"
           animate={{
             opacity: hoveredMuscle === 'chest' 
-              ? Math.min(1, getSorenessOpacity(soreness.chest) + 0.3)
-              : getSorenessOpacity(soreness.chest),
+              ? Math.min(1, getSorenessOpacity(soreness.chest ?? 0) + 0.3)
+              : getSorenessOpacity(soreness.chest ?? 0),
             scale: hoveredMuscle === 'chest' ? 1.05 : 1,
           }}
           transition={{ duration: 0.2 }}
@@ -236,8 +227,8 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           strokeDasharray="5,5"
           animate={{
             opacity: hoveredMuscle === 'back'
-              ? Math.min(1, getSorenessOpacity(soreness.back) * 0.7 + 0.3)
-              : getSorenessOpacity(soreness.back) * 0.7,
+              ? Math.min(1, getSorenessOpacity(soreness.back ?? 0) * 0.7 + 0.3)
+              : getSorenessOpacity(soreness.back ?? 0) * 0.7,
             scale: hoveredMuscle === 'back' ? 1.05 : 1,
           }}
           transition={{ duration: 0.2 }}
@@ -253,12 +244,12 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           cy="145"
           rx="50"
           ry="25"
-          fill={getSorenessColor(soreness.shoulders)}
-          opacity={getSorenessOpacity(soreness.shoulders)}
+          fill={getSorenessColor(soreness.shoulders ?? 0)}
+          opacity={getSorenessOpacity(soreness.shoulders ?? 0)}
           animate={{
             opacity: hoveredMuscle === 'shoulders'
-              ? Math.min(1, getSorenessOpacity(soreness.shoulders) + 0.3)
-              : getSorenessOpacity(soreness.shoulders),
+              ? Math.min(1, getSorenessOpacity(soreness.shoulders ?? 0) + 0.3)
+              : getSorenessOpacity(soreness.shoulders ?? 0),
             scale: hoveredMuscle === 'shoulders' ? 1.1 : 1,
           }}
           transition={{ duration: 0.2 }}
@@ -274,13 +265,13 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           y="180"
           width="60"
           height="60"
-          fill={getSorenessColor(soreness.core)}
-          opacity={getSorenessOpacity(soreness.core)}
+          fill={getSorenessColor(soreness.core ?? 0)}
+          opacity={getSorenessOpacity(soreness.core ?? 0)}
           rx="30"
           animate={{
             opacity: hoveredMuscle === 'core'
-              ? Math.min(1, getSorenessOpacity(soreness.core) + 0.3)
-              : getSorenessOpacity(soreness.core),
+              ? Math.min(1, getSorenessOpacity(soreness.core ?? 0) + 0.3)
+              : getSorenessOpacity(soreness.core ?? 0),
             scale: hoveredMuscle === 'core' ? 1.1 : 1,
           }}
           transition={{ duration: 0.2 }}
