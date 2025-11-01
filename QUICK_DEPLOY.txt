@@ -1,0 +1,28 @@
+═══════════════════════════════════════════════════════════════
+🚀 QUICK DEPLOYMENT CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+BACKEND (Railway):
+✅ Go to: https://railway.app/new
+✅ Deploy from GitHub: JDKristenson/no-colon-still-rollin
+✅ Set Root Directory: backend
+✅ Set Start Command: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+✅ Add Variables:
+   DATABASE_URL=postgresql://postgres.wpyntnmjncdizglqedyl:2022FreshStart@aws-1-us-east-2.pooler.supabase.com:6543/postgres
+   SECRET_KEY=0986f53c88aaca014f0fa1c140fd24e7ec5deef9d595652d65c71e7308a7a3e8
+   CORS_ORIGINS=https://your-app.vercel.app
+✅ Copy Railway URL: _________________________
+
+FRONTEND (Vercel):
+✅ Go to: https://vercel.com/new
+✅ Import: JDKristenson/no-colon-still-rollin
+✅ Set Root Directory: frontend
+✅ Add Variable:
+   VITE_API_URL=[Your Railway URL above]
+✅ Copy Vercel URL: _________________________
+
+CONNECT:
+✅ Update Railway CORS_ORIGINS with Vercel URL
+✅ Test at Vercel URL
+
+═══════════════════════════════════════════════════════════════
