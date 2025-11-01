@@ -305,7 +305,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
               fontSize="12"
               fontWeight="600"
             >
-              {muscleGroups.find(m => m.name === hoveredMuscle)?.label}: {hoveredMuscle ? (soreness[hoveredMuscle] ?? 0) : 0}/10
+              {muscleGroups.find(m => m.name === hoveredMuscle)?.label}: {hoveredMuscle && typeof hoveredMuscle === 'string' ? (soreness[hoveredMuscle] ?? 0) : 0}/10
             </text>
           </motion.g>
         )}
