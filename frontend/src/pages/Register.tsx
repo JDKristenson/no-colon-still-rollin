@@ -5,8 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { motion } from 'framer-motion'
-// @ts-ignore - Image will be added by user
-import rodIcon from '@/assets/rod-of-asclepius.svg?url'
 
 export default function Register() {
   const [name, setName] = useState('')
@@ -39,9 +37,14 @@ export default function Register() {
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center gap-4">
               <img
-                src={rodIcon}
+                src="/assets/rod-of-asclepius.svg"
                 alt="Rod of Asclepius"
                 className="h-12 w-auto flex-shrink-0"
+                onError={(e) => {
+                  // Hide image if not found - allows build to succeed
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
               />
               <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Join the Journey
