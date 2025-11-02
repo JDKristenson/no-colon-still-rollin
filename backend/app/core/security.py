@@ -27,17 +27,20 @@ def get_password_hash(password: str) -> str:
     password_bytes = password.encode('utf-8')
     if len(password_bytes) > 72:
         # Truncate to 72 bytes (not characters) - decode back to string
-        password = password_bytes[:72].decode('utf-8', errors='ignore')
+        # We truncate to 71 bytes to be safe, then decode
+        truncated_bytes = password_bytes[:71]
+        password = truncated_bytes.decode('utf-8', errors='ignore')
+        # Re-encode to verify it's under 72 bytes
+        if len(password.encode('utf-8')) > 72:
+            # If still too long, truncate more aggressively
+            password = password_bytes[:70].decode('utf-8', errors='ignore')
     
-    try:
-        return pwd_context.hash(password)
-    except ValueError as e:
-        # If passlib still complains, truncate more aggressively
-        if "cannot be longer than 72 bytes" in str(e):
-            # Fallback: truncate to safe length
-            safe_password = password_bytes[:70].decode('utf-8', errors='ignore')
-            return pwd_context.hash(safe_password)
-        raise
+    # Double-check before hashing
+    final_bytes = password.encode('utf-8')
+    if len(final_bytes) > 72:
+        password = final_bytes[:71].decode('utf-8', errors='ignore')
+    
+    return pwd_context.hash(password)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
