@@ -31,6 +31,13 @@ api.interceptors.response.use(
     if (error.response?.status >= 500) {
       console.error('Server error:', error.response?.data)
     }
+    // Log network errors (connection issues)
+    if (error.code === 'ERR_NETWORK' || error.message?.includes('Network Error')) {
+      console.error('Network error - cannot reach backend:', {
+        baseURL: API_URL,
+        error: error.message
+      })
+    }
     return Promise.reject(error)
   }
 )

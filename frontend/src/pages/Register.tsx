@@ -21,7 +21,10 @@ export default function Register() {
       await register(email, password, name)
       navigate('/dashboard')
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Registration failed')
+      console.error('Registration error:', err)
+      const errorMessage = err.response?.data?.detail || err.message || 'Registration failed'
+      const apiUrl = import.meta.env.VITE_API_URL || 'Not set (using /api)'
+      setError(`${errorMessage}. API URL: ${apiUrl}`)
     }
   }
 
