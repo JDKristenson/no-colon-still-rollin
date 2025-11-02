@@ -130,7 +130,22 @@ async def register(user_data: UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=Token)
 async def login(form_data: LoginRequest, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == form_data.email).first()
+    # Gracefully handle missing email_verified column
+    try:
+        user = db.query(User).filter(User.email == form_data.email).first()
+    except Exception as e:
+        # If email_verified column doesn't exist, query directly with SQL
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.warning(f"Error querying user for login (migration may be needed): {e}")
+        from sqlalchemy import text
+        result = db.execute(text("SELECT id, email, hashed_password, name FROM users WHERE email = :email"), {"email": form_data.email})
+        row = result.fetchone()
+        if row:
+            user = User(id=row[0], email=row[1], hashed_password=row[2], name=row[3])
+        else:
+            user = None
+    
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -175,8 +190,20 @@ async def verify_email(token: str, db: Session = Depends(get_db)):
             detail="Invalid verification token"
         )
     
-    # Find user by email
-    user = db.query(User).filter(User.email == email).first()
+    # Find user by email (gracefully handle missing email_verified column)
+    try:
+        user = db.query(User).filter(User.email == email).first()
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.warning(f"Error querying user for email verification (migration may be needed): {e}")
+        from sqlalchemy import text
+        result = db.execute(text("SELECT id, email FROM users WHERE email = :email"), {"email": email})
+        row = result.fetchone()
+        if row:
+            user = User(id=row[0], email=row[1])
+        else:
+            user = None
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
