@@ -54,60 +54,33 @@ export default function Login() {
                     transform="translate(2, 2)"
                   />
                 </g>
-                {/* Rod of Asclepius - Staff (wider at top/bottom, tapers in middle) */}
+                {/* Rod of Asclepius - Staff (vertical staff) */}
                 <path
                   d="M60 15 L60 145"
                   stroke="#1e3a8a"
                   strokeWidth="5"
                   strokeLinecap="round"
                 />
-                {/* Snake - First coil (left to right, just below head) */}
+                {/* Snake - Complete body with three distinct coils wrapping around staff */}
                 <path
-                  d="M45 30 Q35 35 35 45 Q35 55 50 60"
+                  d="M38 28 Q35 30 38 32 L38 35 Q35 38 35 42 Q35 48 42 52 Q50 56 50 62 Q50 68 58 72 Q68 76 68 82 Q68 88 58 92 Q48 96 42 100 Q35 104 35 110 Q35 116 42 120 Q50 124 52 130 Q52 134 50 138"
                   stroke="#1e3a8a"
                   strokeWidth="4"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                {/* Snake - Second coil (right to left, middle section) */}
+                {/* Snake head (upper left, facing right) - more defined */}
                 <path
-                  d="M50 60 Q65 65 75 75 Q75 85 60 90"
-                  stroke="#1e3a8a"
-                  strokeWidth="4"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                {/* Snake - Third coil (left to right, lower section) */}
-                <path
-                  d="M60 90 Q45 95 35 105 Q35 115 50 120"
-                  stroke="#1e3a8a"
-                  strokeWidth="4"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                {/* Snake tail (pointed tip, extending down and to the right) */}
-                <path
-                  d="M50 120 Q45 125 40 130 Q35 135 38 140"
-                  stroke="#1e3a8a"
-                  strokeWidth="4"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                {/* Snake head (upper left, facing right) */}
-                <path
-                  d="M35 25 Q32 22 30 25 Q28 28 30 30 Q32 32 35 30 Q38 28 40 30"
+                  d="M38 25 Q35 22 32 25 Q30 27 32 29 Q35 31 38 29"
                   stroke="#1e3a8a"
                   strokeWidth="4"
                   fill="#1e3a8a"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                {/* Snake eye */}
-                <circle cx="36" cy="27" r="1.5" fill="white" />
+                {/* Snake eye (small white dot) */}
+                <circle cx="35" cy="26" r="1.5" fill="white" />
                 <defs>
                   <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
                     <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
