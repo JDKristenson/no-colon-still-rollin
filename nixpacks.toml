@@ -1,0 +1,12 @@
+# Nixpacks configuration for Railway
+[phases.setup]
+nixPkgs = ['python311', 'postgresql', 'libpq']
+
+[phases.install]
+cmds = [
+  'pip install --upgrade pip',
+  'pip install -r backend/requirements.txt'
+]
+
+[start]
+cmd = 'uvicorn app.main:app --host 0.0.0.0 --port $PORT'
