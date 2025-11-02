@@ -88,10 +88,20 @@ async def generate_protocol(user: User, target_date: date, db: Session) -> Dict:
     if not foods:
         raise HTTPException(status_code=500, detail="No foods found in database")
     
-    # Get active markers for prioritization
-    from app.algorithms.glutamine import get_active_markers
-    active_markers = get_active_markers(user.id, db)
-    active_target_ids = [m.target_id for m in active_markers] if active_markers else []
+    # Get active markers for prioritization (gracefully handle if tables don't exist)
+    active_markers = []
+    active_target_ids = []
+    try:
+        from app.algorithms.glutamine import get_active_markers
+        active_markers = get_active_markers(user.id, db)
+        active_target_ids = [m.target_id for m in active_markers] if active_markers else []
+    except Exception as e:
+        # If genetic marker tables don't exist yet, continue without marker prioritization
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.warning(f"Could not load active markers (migration may be needed): {e}")
+        active_markers = []
+        active_target_ids = []
     
     # Get current soreness state for protein adjustment
     from app.algorithms.workout_rotation import get_current_soreness_state
@@ -169,8 +179,15 @@ async def generate_protocol(user: User, target_date: date, db: Session) -> Dict:
     keto_compatible = total_net_carbs < 50
     keto_score = max(0, 100 - (total_net_carbs * 2))  # Simple scoring
     
-    # Calculate glutamine competition score (with active markers)
-    glutamine_score = calculate_glutamine_score(user.id, db, active_markers)
+    # Calculate glutamine competition score (with active markers if available)
+    try:
+        glutamine_score = calculate_glutamine_score(user.id, db, active_markers if active_markers else None)
+    except Exception as e:
+        # Fallback if marker tables don't exist
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.warning(f"Could not calculate glutamine score with markers: {e}")
+        glutamine_score = calculate_glutamine_score(user.id, db, None)
     
     # Create protocol record
     protocol = DailyProtocol(

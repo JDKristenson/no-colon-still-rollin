@@ -72,21 +72,28 @@ def get_active_markers(user_id: int, db: Session) -> List[GeneticMarker]:
     Get currently detected markers from the most recent test.
     Returns list of GeneticMarker objects that are currently active.
     """
-    # Get most recent test
-    latest_test = db.query(CTDNATestResult).filter(
-        CTDNATestResult.user_id == user_id
-    ).order_by(CTDNATestResult.test_date.desc()).first()
-    
-    if not latest_test:
+    try:
+        # Get most recent test
+        latest_test = db.query(CTDNATestResult).filter(
+            CTDNATestResult.user_id == user_id
+        ).order_by(CTDNATestResult.test_date.desc()).first()
+        
+        if not latest_test:
+            return []
+        
+        # Get detected markers from this test
+        detected = db.query(DetectedMarker).filter(
+            DetectedMarker.test_result_id == latest_test.id,
+            DetectedMarker.detected == True
+        ).all()
+        
+        # Return the actual marker objects
+        markers = [d.marker for d in detected if d.marker]
+        return markers
+    except Exception as e:
+        # If tables don't exist yet, return empty list
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.warning(f"Could not query active markers (tables may not exist): {e}")
         return []
-    
-    # Get detected markers from this test
-    detected = db.query(DetectedMarker).filter(
-        DetectedMarker.test_result_id == latest_test.id,
-        DetectedMarker.detected == True
-    ).all()
-    
-    # Return the actual marker objects
-    markers = [d.marker for d in detected if d.marker]
-    return markers
 
