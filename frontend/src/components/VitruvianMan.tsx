@@ -157,7 +157,6 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
         {Object.entries(muscleAreas).map(([muscleName, area]) => {
           const intensity = soreness[muscleName] ?? 0
           const isHovered = hoveredMuscle === muscleName
-          const muscle = muscleGroups.find(m => m.name === muscleName)
 
           return (
             <motion.rect
