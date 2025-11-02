@@ -35,52 +35,52 @@ export default function Register() {
       >
         <Card className="shadow-xl border-0">
           <CardHeader className="space-y-1">
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex items-center justify-center gap-4">
               <svg
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
+                width="48"
+                height="48"
+                viewBox="0 0 100 140"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="text-blue-600 flex-shrink-0"
               >
-                {/* Rod of Asclepius - Staff */}
+                {/* Rod of Asclepius - Staff (vertical line) */}
                 <line
-                  x1="12"
-                  y1="3"
-                  x2="12"
-                  y2="21"
+                  x1="50"
+                  y1="10"
+                  x2="50"
+                  y2="130"
                   stroke="currentColor"
-                  strokeWidth="2.5"
+                  strokeWidth="4"
                   strokeLinecap="round"
                 />
-                {/* Snake body - wrapped around staff */}
+                {/* Snake body - cleaner coil around staff */}
                 <path
-                  d="M 12 6 Q 14 7 14 9 Q 14 11 12 12 Q 10 13 10 15 Q 10 17 12 18"
+                  d="M 50 25 Q 65 30 68 42 Q 70 52 62 58 Q 55 64 50 72 Q 45 80 42 88 Q 38 96 40 104 Q 42 112 50 118 Q 58 124 68 120"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="4"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
                 <path
-                  d="M 12 6 Q 10 7 10 9 Q 10 11 12 12 Q 14 13 14 15 Q 14 17 12 18"
+                  d="M 50 25 Q 35 30 32 42 Q 30 52 38 58 Q 45 64 50 72 Q 55 80 58 88 Q 62 96 60 104 Q 58 112 50 118 Q 42 124 32 120"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="4"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                {/* Snake head */}
+                {/* Snake head - more defined */}
                 <ellipse
-                  cx="12"
-                  cy="18"
-                  rx="2"
-                  ry="1.5"
+                  cx="50"
+                  cy="120"
+                  rx="12"
+                  ry="8"
                   fill="currentColor"
                 />
-                {/* Small details on head */}
-                <circle cx="11.5" cy="17.5" r="0.5" fill="white" />
+                {/* Snake eye */}
+                <circle cx="47" cy="118" r="2" fill="white" />
               </svg>
               <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Join the Journey
