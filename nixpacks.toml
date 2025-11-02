@@ -9,4 +9,4 @@ cmds = [
 ]
 
 [start]
-cmd = 'cd backend && bash start.sh'
+cmd = 'cd backend && python3 start.py'
