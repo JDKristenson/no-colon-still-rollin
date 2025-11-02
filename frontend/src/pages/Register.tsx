@@ -35,8 +35,54 @@ export default function Register() {
       >
         <Card className="shadow-xl border-0">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-3xl font-bold text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              Join the Journey
+            <CardTitle className="text-3xl font-bold text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent flex items-center justify-center gap-3">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-blue-600 flex-shrink-0"
+              >
+                {/* Rod of Asclepius - Staff */}
+                <line
+                  x1="12"
+                  y1="3"
+                  x2="12"
+                  y2="21"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
+                {/* Snake body - wrapped around staff */}
+                <path
+                  d="M 12 6 Q 14 7 14 9 Q 14 11 12 12 Q 10 13 10 15 Q 10 17 12 18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M 12 6 Q 10 7 10 9 Q 10 11 12 12 Q 14 13 14 15 Q 14 17 12 18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                {/* Snake head */}
+                <ellipse
+                  cx="12"
+                  cy="18"
+                  rx="2"
+                  ry="1.5"
+                  fill="currentColor"
+                />
+                {/* Small details on head */}
+                <circle cx="11.5" cy="17.5" r="0.5" fill="white" />
+              </svg>
+              <span>Join the Journey</span>
             </CardTitle>
             <CardDescription className="text-center">
               Create your account to get started
