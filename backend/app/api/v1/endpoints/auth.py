@@ -27,10 +27,11 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     try:
         user = db.query(User).filter(User.id == user_id).first()
     except Exception as e:
-        # If email_verified column doesn't exist, try to query without it
+        # If email_verified column doesn't exist, rollback and try fallback query
         import logging
         logger = logging.getLogger(__name__)
         logger.warning(f"Error querying user (migration may be needed): {e}")
+        db.rollback()  # Rollback the failed transaction
         # Fallback: query only essential fields
         from sqlalchemy import text
         result = db.execute(text("SELECT id, email, hashed_password, name FROM users WHERE id = :user_id"), {"user_id": user_id})
@@ -58,10 +59,11 @@ async def register(user_data: UserCreate, db: Session = Depends(get_db)):
         try:
             existing_user = db.query(User).filter(User.email == user_data.email).first()
         except Exception as e:
-            # If email_verified column doesn't exist, query directly with SQL
+            # If email_verified column doesn't exist, rollback transaction and query directly with SQL
             import logging
             logger = logging.getLogger(__name__)
             logger.warning(f"Error querying user (migration may be needed): {e}")
+            db.rollback()  # Rollback the failed transaction
             from sqlalchemy import text
             result = db.execute(text("SELECT id FROM users WHERE email = :email"), {"email": user_data.email})
             row = result.fetchone()
@@ -134,10 +136,11 @@ async def login(form_data: LoginRequest, db: Session = Depends(get_db)):
     try:
         user = db.query(User).filter(User.email == form_data.email).first()
     except Exception as e:
-        # If email_verified column doesn't exist, query directly with SQL
+        # If email_verified column doesn't exist, rollback and query directly with SQL
         import logging
         logger = logging.getLogger(__name__)
         logger.warning(f"Error querying user for login (migration may be needed): {e}")
+        db.rollback()  # Rollback the failed transaction
         from sqlalchemy import text
         result = db.execute(text("SELECT id, email, hashed_password, name FROM users WHERE email = :email"), {"email": form_data.email})
         row = result.fetchone()
@@ -197,6 +200,7 @@ async def verify_email(token: str, db: Session = Depends(get_db)):
         import logging
         logger = logging.getLogger(__name__)
         logger.warning(f"Error querying user for email verification (migration may be needed): {e}")
+        db.rollback()  # Rollback the failed transaction
         from sqlalchemy import text
         result = db.execute(text("SELECT id, email FROM users WHERE email = :email"), {"email": email})
         row = result.fetchone()
