@@ -4,11 +4,10 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from app.core.config import settings
 
-# Configure passlib to truncate passwords automatically (bcrypt limit is 72 bytes)
+# Configure passlib for bcrypt (bcrypt has 72-byte limit, handled in get_password_hash)
 pwd_context = CryptContext(
     schemes=["bcrypt"],
-    deprecated="auto",
-    bcrypt__max_password_length=72  # Set max length for bcrypt
+    deprecated="auto"
 )
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
