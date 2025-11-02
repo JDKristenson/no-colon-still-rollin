@@ -70,38 +70,48 @@ export default function Dashboard() {
           </motion.div>
         )}
 
-        {/* Top Metrics */}
+        {/* Top Metrics - Premium Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+            whileHover={{ y: -4, scale: 1.02 }}
           >
-            <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-blue-50 hover:shadow-xl transition-shadow">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                  <Target className="text-blue-600" size={20} />
+            <Card className="relative overflow-hidden border-0 shadow-premium bg-gradient-to-br from-white via-blue-50/50 to-blue-100/30 hover:shadow-premium-lg transition-all duration-300">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+              <CardHeader className="pb-3 relative">
+                <CardTitle className="text-base font-semibold flex items-center gap-2.5 text-gray-700">
+                  <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
+                    <Target size={18} />
+                  </div>
                   Current Weight
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-blue-600">
-                  {dashboardData?.user?.current_weight_lbs || '--'} lbs
+              <CardContent className="relative">
+                <div className="text-4xl font-bold text-blue-600 mb-2">
+                  {dashboardData?.user?.current_weight_lbs || '--'}
+                  <span className="text-xl text-gray-500 font-normal ml-1">lbs</span>
                 </div>
                 {weightTrend?.change_lbs && (
-                  <div className="flex items-center gap-1 mt-2 text-sm">
+                  <div className="flex items-center gap-2 mt-3">
                     {weightTrend.change_lbs > 0 ? (
                       <>
-                        <TrendingUp className="text-green-600" size={16} />
-                        <span className="text-green-600">+{weightTrend.change_lbs.toFixed(1)} lbs</span>
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-green-50 text-green-700">
+                          <TrendingUp size={14} />
+                          <span className="text-xs font-medium">+{weightTrend.change_lbs.toFixed(1)}</span>
+                        </div>
+                        <span className="text-xs text-gray-500">30 days</span>
                       </>
                     ) : (
                       <>
-                        <TrendingDown className="text-red-600" size={16} />
-                        <span className="text-red-600">{weightTrend.change_lbs.toFixed(1)} lbs</span>
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-red-50 text-red-700">
+                          <TrendingDown size={14} />
+                          <span className="text-xs font-medium">{weightTrend.change_lbs.toFixed(1)}</span>
+                        </div>
+                        <span className="text-xs text-gray-500">30 days</span>
                       </>
                     )}
-                    <span className="text-muted-foreground">(30 days)</span>
                   </div>
                 )}
               </CardContent>
@@ -109,27 +119,32 @@ export default function Dashboard() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+            whileHover={{ y: -4, scale: 1.02 }}
           >
-            <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-green-50 hover:shadow-xl transition-shadow">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                  <Zap className="text-green-600" size={20} />
+            <Card className="relative overflow-hidden border-0 shadow-premium bg-gradient-to-br from-white via-green-50/50 to-emerald-100/30 hover:shadow-premium-lg transition-all duration-300">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+              <CardHeader className="pb-3 relative">
+                <CardTitle className="text-base font-semibold flex items-center gap-2.5 text-gray-700">
+                  <div className="p-2 rounded-lg bg-green-100 text-green-600">
+                    <Zap size={18} />
+                  </div>
                   Glutamine Score
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-green-600">
-                  {metrics.glutamine_competition_score?.toFixed(0) || '0'} / 100
+              <CardContent className="relative">
+                <div className="text-4xl font-bold text-green-600 mb-3">
+                  {metrics.glutamine_competition_score?.toFixed(0) || '0'}
+                  <span className="text-xl text-gray-500 font-normal"> / 100</span>
                 </div>
-                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                <div className="mt-3 w-full bg-gray-200/60 rounded-full h-2.5 overflow-hidden">
                   <motion.div
-                    className="bg-green-600 h-2 rounded-full"
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 h-2.5 rounded-full shadow-sm"
                     initial={{ width: 0 }}
                     animate={{ width: `${metrics.glutamine_competition_score || 0}%` }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                   />
                 </div>
               </CardContent>
