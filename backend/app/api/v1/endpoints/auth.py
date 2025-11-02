@@ -23,7 +23,24 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
             detail="Invalid authentication credentials",
         )
     user_id = payload.get("sub")
-    user = db.query(User).filter(User.id == user_id).first()
+    # Use select() to avoid loading columns that might not exist yet
+    try:
+        user = db.query(User).filter(User.id == user_id).first()
+    except Exception as e:
+        # If email_verified column doesn't exist, try to query without it
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.warning(f"Error querying user (migration may be needed): {e}")
+        # Fallback: query only essential fields
+        from sqlalchemy import text
+        result = db.execute(text("SELECT id, email, hashed_password, name FROM users WHERE id = :user_id"), {"user_id": user_id})
+        row = result.fetchone()
+        if row:
+            # Create a minimal user object
+            user = User(id=row[0], email=row[1], hashed_password=row[2], name=row[3])
+        else:
+            user = None
+    
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -37,8 +54,18 @@ async def register(user_data: UserCreate, db: Session = Depends(get_db)):
     logger = logging.getLogger(__name__)
     
     try:
-        # Check if user exists
-        existing_user = db.query(User).filter(User.email == user_data.email).first()
+        # Check if user exists (gracefully handle missing email_verified column)
+        try:
+            existing_user = db.query(User).filter(User.email == user_data.email).first()
+        except Exception as e:
+            # If email_verified column doesn't exist, query directly with SQL
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.warning(f"Error querying user (migration may be needed): {e}")
+            from sqlalchemy import text
+            result = db.execute(text("SELECT id FROM users WHERE email = :email"), {"email": user_data.email})
+            row = result.fetchone()
+            existing_user = User(id=row[0]) if row else None
         if existing_user:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,

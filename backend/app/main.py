@@ -38,3 +38,8 @@ async def root():
 async def health():
     return {"status": "healthy"}
 
+# Also provide health at /api/health for convenience
+@app.get("/api/health")
+async def api_health():
+    return {"status": "healthy"}
+
