@@ -10,7 +10,7 @@ interface VitruvianManProps {
 // Premium color mapping with smooth gradients
 const getSorenessColor = (intensity: number): string => {
   if (intensity === 0) return 'rgba(229, 231, 235, 0.1)'
-  if (intensity <= 2) return 'rgba(59, 130, 246, 0.4)'
+  if (intensity <= 2) return 'rgba(59, 130, 246, 0.5)'
   if (intensity <= 4) return 'rgba(59, 130, 246, 0.6)'
   if (intensity <= 6) return 'rgba(139, 92, 246, 0.7)'
   if (intensity <= 8) return 'rgba(239, 68, 68, 0.8)'
@@ -19,19 +19,29 @@ const getSorenessColor = (intensity: number): string => {
 
 const getSorenessOpacity = (intensity: number): number => {
   if (intensity === 0) return 0
-  return Math.max(0.4, Math.min(0.95, intensity / 10))
+  return Math.max(0.5, Math.min(0.95, intensity / 10))
 }
 
 export default function VitruvianMan({ soreness, onMuscleClick, interactive = true }: VitruvianManProps) {
   const [hoveredMuscle, setHoveredMuscle] = useState<string | null>(null)
 
+  // Muscle group overlay areas (percentage-based for responsiveness)
+  const muscleAreas = {
+    chest: { x: 40, y: 28, w: 20, h: 15 },
+    back: { x: 38, y: 30, w: 24, h: 20 },
+    shoulders: { x: 35, y: 22, w: 30, h: 12 },
+    legs: { x: 38, y: 55, w: 24, h: 35 },
+    core: { x: 42, y: 43, w: 16, h: 18 },
+    arms: { x: 18, y: 25, w: 64, h: 45 },
+  }
+
   const muscleGroups = [
-    { name: 'chest', label: 'Chest', position: { x: 50, y: 35 }, area: { x: 40, y: 25, w: 20, h: 20 } },
-    { name: 'back', label: 'Back', position: { x: 50, y: 45 }, area: { x: 35, y: 30, w: 30, h: 25 } },
-    { name: 'shoulders', label: 'Shoulders', position: { x: 50, y: 25 }, area: { x: 30, y: 20, w: 40, h: 15 } },
-    { name: 'legs', label: 'Legs', position: { x: 50, y: 75 }, area: { x: 35, y: 60, w: 30, h: 35 } },
-    { name: 'core', label: 'Core', position: { x: 50, y: 50 }, area: { x: 40, y: 45, w: 20, h: 20 } },
-    { name: 'arms', label: 'Arms', position: { x: 50, y: 40 }, area: { x: 15, y: 25, w: 70, h: 40 } },
+    { name: 'chest', label: 'Chest', position: { x: 50, y: 35 } },
+    { name: 'back', label: 'Back', position: { x: 50, y: 45 } },
+    { name: 'shoulders', label: 'Shoulders', position: { x: 50, y: 25 } },
+    { name: 'legs', label: 'Legs', position: { x: 50, y: 75 } },
+    { name: 'core', label: 'Core', position: { x: 50, y: 50 } },
+    { name: 'arms', label: 'Arms', position: { x: 50, y: 40 } },
   ]
 
   const handleMuscleHover = (muscle: string) => {
@@ -59,102 +69,117 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
       >
         <defs>
           {/* Vitruvian Circle */}
-          <circle id="vitruvianCircle" cx="50" cy="50" r="45" fill="none" stroke="#CBD5E1" strokeWidth="0.3" opacity="0.5" />
+          <circle id="vitruvianCircle" cx="50" cy="50" r="45" fill="none" stroke="#CBD5E1" strokeWidth="0.5" opacity="0.6" />
           
           {/* Vitruvian Square */}
-          <rect id="vitruvianSquare" x="5" y="5" width="90" height="90" fill="none" stroke="#CBD5E1" strokeWidth="0.3" opacity="0.5" />
-          
-          {/* Muscle overlay gradients */}
-          {muscleGroups.map((muscle) => {
-            const intensity = soreness[muscle.name] ?? 0
-            return (
-              <linearGradient key={`${muscle.name}Grad`} id={`${muscle.name}Grad`} x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor={getSorenessColor(intensity)} stopOpacity="0.3" />
-                <stop offset="100%" stopColor={getSorenessColor(intensity)} stopOpacity={getSorenessOpacity(intensity)} />
-              </linearGradient>
-            )
-          })}
+          <rect id="vitruvianSquare" x="5" y="5" width="90" height="90" fill="none" stroke="#CBD5E1" strokeWidth="0.5" opacity="0.6" />
         </defs>
 
         {/* Background - Vitruvian Circle and Square */}
         <use href="#vitruvianCircle" />
         <use href="#vitruvianSquare" />
 
-        {/* Actual Vitruvian Man - Using embedded path data from Leonardo's drawing */}
-        {/* Base figure - simplified but recognizable proportions */}
-        <g id="vitruvianMan" opacity="0.9">
-          {/* Head */}
-          <ellipse cx="50" cy="18" rx="4" ry="5" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
+        {/* Actual Vitruvian Man - Leonardo da Vinci's Proportions */}
+        <g id="vitruvianMan" opacity="0.95">
+          {/* Head - proportional to body */}
+          <ellipse cx="50" cy="16" rx="5" ry="6" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.4" />
           
-          {/* Torso */}
-          <rect x="46" y="23" width="8" height="18" rx="1" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
+          {/* Neck */}
+          <rect x="48" y="22" width="4" height="3" rx="0.5" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
           
-          {/* Arms - Extended position (Vitruvian pose) */}
+          {/* Torso - core of the figure */}
+          <rect x="44" y="25" width="12" height="20" rx="1.5" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.4" />
+          
+          {/* Chest definition */}
           <path
-            d="M 46 25 Q 35 30 25 35 Q 20 40 18 45 Q 16 50 18 55 Q 20 60 25 62 Q 35 65 46 65"
+            d="M 46 28 Q 50 26 54 28 Q 53 32 50 33 Q 47 32 46 28 Z"
             fill="none"
             stroke="#2D3748"
-            strokeWidth="0.5"
-            strokeLinecap="round"
+            strokeWidth="0.3"
+            opacity="0.4"
           />
+          
+          {/* Arms - Extended Vitruvian pose */}
+          {/* Left arm */}
           <path
-            d="M 54 25 Q 65 30 75 35 Q 80 40 82 45 Q 84 50 82 55 Q 80 60 75 62 Q 65 65 54 65"
+            d="M 44 28 Q 30 30 18 38 Q 12 42 10 48 Q 8 54 12 58 Q 20 62 30 60 Q 40 58 44 50"
             fill="none"
             stroke="#2D3748"
-            strokeWidth="0.5"
+            strokeWidth="0.6"
             strokeLinecap="round"
+            strokeLinejoin="round"
           />
+          
+          {/* Right arm */}
+          <path
+            d="M 56 28 Q 70 30 82 38 Q 88 42 90 48 Q 92 54 88 58 Q 80 62 70 60 Q 60 58 56 50"
+            fill="none"
+            stroke="#2D3748"
+            strokeWidth="0.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          
+          {/* Hands */}
+          <ellipse cx="12" cy="58" rx="2.5" ry="3.5" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
+          <ellipse cx="88" cy="58" rx="2.5" ry="3.5" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
           
           {/* Legs - Standing position */}
+          {/* Left leg */}
           <path
-            d="M 48 41 L 42 70 L 40 85 L 45 85 L 44 70 Z"
+            d="M 48 45 L 42 72 L 38 88 L 44 88 L 46 72 Z"
             fill="#F5E6D3"
             stroke="#2D3748"
-            strokeWidth="0.3"
+            strokeWidth="0.5"
+            strokeLinejoin="round"
           />
+          
+          {/* Right leg */}
           <path
-            d="M 52 41 L 58 70 L 60 85 L 55 85 L 56 70 Z"
+            d="M 52 45 L 58 72 L 62 88 L 56 88 L 54 72 Z"
             fill="#F5E6D3"
             stroke="#2D3748"
-            strokeWidth="0.3"
+            strokeWidth="0.5"
+            strokeLinejoin="round"
           />
           
           {/* Feet */}
-          <ellipse cx="42" cy="85" rx="3" ry="2" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
-          <ellipse cx="58" cy="85" rx="3" ry="2" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
+          <ellipse cx="40" cy="88" rx="4" ry="2.5" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
+          <ellipse cx="60" cy="88" rx="4" ry="2.5" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
           
-          {/* Hands */}
-          <ellipse cx="18" cy="55" rx="2" ry="3" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
-          <ellipse cx="82" cy="55" rx="2" ry="3" fill="#F5E6D3" stroke="#2D3748" strokeWidth="0.3" />
+          {/* Subtle anatomical details */}
+          <ellipse cx="48" cy="16" rx="1" ry="1.5" fill="#2D3748" opacity="0.6" />
+          <ellipse cx="52" cy="16" rx="1" ry="1.5" fill="#2D3748" opacity="0.6" />
+          <path d="M 48 19 Q 50 20 52 19" stroke="#2D3748" strokeWidth="0.3" fill="none" opacity="0.4" />
         </g>
 
         {/* Muscle Overlays - Interactive soreness visualization */}
-        {muscleGroups.map((muscle) => {
-          const intensity = soreness[muscle.name] ?? 0
-          const isHovered = hoveredMuscle === muscle.name
-          const area = muscle.area
+        {Object.entries(muscleAreas).map(([muscleName, area]) => {
+          const intensity = soreness[muscleName] ?? 0
+          const isHovered = hoveredMuscle === muscleName
+          const muscle = muscleGroups.find(m => m.name === muscleName)
 
           return (
             <motion.rect
-              key={muscle.name}
+              key={muscleName}
               x={`${area.x}%`}
               y={`${area.y}%`}
               width={`${area.w}%`}
               height={`${area.h}%`}
               fill={getSorenessColor(intensity)}
               opacity={intensity > 0 ? getSorenessOpacity(intensity) : 0}
-              rx="2"
-              stroke={isHovered ? '#1e40af' : 'none'}
-              strokeWidth={isHovered ? 1 : 0}
-              onMouseEnter={() => handleMuscleHover(muscle.name)}
+              rx="3"
+              stroke={isHovered ? '#1e40af' : intensity > 0 ? getSorenessColor(intensity) : 'none'}
+              strokeWidth={isHovered ? 1.5 : 0.5}
+              onMouseEnter={() => handleMuscleHover(muscleName)}
               onMouseLeave={handleMuscleLeave}
-              onClick={() => handleMuscleClick(muscle.name)}
+              onClick={() => handleMuscleClick(muscleName)}
               style={{ cursor: interactive ? 'pointer' : 'default' }}
               animate={{
                 opacity: isHovered && intensity > 0 
-                  ? Math.min(0.95, getSorenessOpacity(intensity) + 0.2) 
+                  ? Math.min(0.95, getSorenessOpacity(intensity) + 0.15) 
                   : getSorenessOpacity(intensity),
-                scale: isHovered ? 1.05 : 1,
+                scale: isHovered ? 1.02 : 1,
               }}
               transition={{ duration: 0.2 }}
             />
@@ -174,20 +199,20 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
               transition={{ duration: 0.2 }}
             >
               <rect
-                x={`${muscle.position.x - 8}%`}
-                y={`${muscle.position.y - 5}%`}
-                width="16%"
+                x={`${muscle.position.x - 10}%`}
+                y={`${muscle.position.y - 4}%`}
+                width="20%"
                 height="6%"
                 fill="rgba(30, 58, 138, 0.95)"
-                rx="2"
+                rx="3"
               />
               <text
                 x={`${muscle.position.x}%`}
                 y={`${muscle.position.y}%`}
                 textAnchor="middle"
                 fill="white"
-                fontSize="2"
-                fontWeight="600"
+                fontSize="2.5"
+                fontWeight="700"
               >
                 {muscle.label}: {intensity}/10
               </text>
