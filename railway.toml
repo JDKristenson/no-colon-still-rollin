@@ -2,6 +2,6 @@
 buildCommand = ""
 
 [deploy]
-startCommand = "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+startCommand = "cd backend && bash start.sh"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
