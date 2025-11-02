@@ -37,49 +37,90 @@ export default function Login() {
             <div className="flex items-center justify-center gap-4">
               <svg
                 width="48"
-                height="48"
-                viewBox="0 0 100 140"
+                height="64"
+                viewBox="0 0 120 160"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="text-blue-600 flex-shrink-0"
+                className="flex-shrink-0"
               >
-                {/* Rod of Asclepius - Staff (vertical line) */}
-                <line
-                  x1="50"
-                  y1="10"
-                  x2="50"
-                  y2="130"
-                  stroke="currentColor"
-                  strokeWidth="4"
+                {/* Drop shadow */}
+                <g filter="url(#shadow)">
+                  <path
+                    d="M60 15 L60 145"
+                    stroke="#1e3a8a"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                    opacity="0.3"
+                    transform="translate(2, 2)"
+                  />
+                </g>
+                {/* Rod of Asclepius - Staff (wider at top/bottom, tapers in middle) */}
+                <path
+                  d="M60 15 L60 145"
+                  stroke="#1e3a8a"
+                  strokeWidth="5"
                   strokeLinecap="round"
                 />
-                {/* Snake body - cleaner coil around staff */}
+                {/* Snake - First coil (left to right, just below head) */}
                 <path
-                  d="M 50 25 Q 65 30 68 42 Q 70 52 62 58 Q 55 64 50 72 Q 45 80 42 88 Q 38 96 40 104 Q 42 112 50 118 Q 58 124 68 120"
-                  stroke="currentColor"
+                  d="M45 30 Q35 35 35 45 Q35 55 50 60"
+                  stroke="#1e3a8a"
                   strokeWidth="4"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
+                {/* Snake - Second coil (right to left, middle section) */}
                 <path
-                  d="M 50 25 Q 35 30 32 42 Q 30 52 38 58 Q 45 64 50 72 Q 55 80 58 88 Q 62 96 60 104 Q 58 112 50 118 Q 42 124 32 120"
-                  stroke="currentColor"
+                  d="M50 60 Q65 65 75 75 Q75 85 60 90"
+                  stroke="#1e3a8a"
                   strokeWidth="4"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                {/* Snake head - more defined */}
-                <ellipse
-                  cx="50"
-                  cy="120"
-                  rx="12"
-                  ry="8"
-                  fill="currentColor"
+                {/* Snake - Third coil (left to right, lower section) */}
+                <path
+                  d="M60 90 Q45 95 35 105 Q35 115 50 120"
+                  stroke="#1e3a8a"
+                  strokeWidth="4"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                {/* Snake tail (pointed tip, extending down and to the right) */}
+                <path
+                  d="M50 120 Q45 125 40 130 Q35 135 38 140"
+                  stroke="#1e3a8a"
+                  strokeWidth="4"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                {/* Snake head (upper left, facing right) */}
+                <path
+                  d="M35 25 Q32 22 30 25 Q28 28 30 30 Q32 32 35 30 Q38 28 40 30"
+                  stroke="#1e3a8a"
+                  strokeWidth="4"
+                  fill="#1e3a8a"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 {/* Snake eye */}
-                <circle cx="47" cy="118" r="2" fill="white" />
+                <circle cx="36" cy="27" r="1.5" fill="white" />
+                <defs>
+                  <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+                    <feOffset dx="2" dy="2" result="offsetblur"/>
+                    <feComponentTransfer>
+                      <feFuncA type="linear" slope="0.3"/>
+                    </feComponentTransfer>
+                    <feMerge>
+                      <feMergeNode/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
               </svg>
               <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 No Colon, Still Rollin'
