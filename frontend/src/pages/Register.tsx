@@ -22,9 +22,10 @@ export default function Register() {
       navigate('/dashboard')
     } catch (err: any) {
       console.error('Registration error:', err)
-      const errorMessage = err.response?.data?.detail || err.message || 'Registration failed'
-      const apiUrl = import.meta.env.VITE_API_URL || 'Not set (using /api)'
-      setError(`${errorMessage}. API URL: ${apiUrl}`)
+          const errorMessage = err.response?.data?.detail || err.message || 'Registration failed'
+          const apiUrl = import.meta.env.VITE_API_URL || 'Not set (using /api)'
+          const baseUrl = err.config?.baseURL || apiUrl
+          setError(`${errorMessage} (Base URL: ${baseUrl})`)
     }
   }
 

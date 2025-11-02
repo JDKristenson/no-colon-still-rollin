@@ -1,7 +1,14 @@
 import axios from 'axios'
 
 // Use environment variable for API URL, fallback to relative path
-const API_URL = import.meta.env.VITE_API_URL || '/api'
+// If VITE_API_URL is set to full Railway URL, ensure it includes /api suffix
+let API_URL = import.meta.env.VITE_API_URL || '/api'
+
+// If API_URL is a full URL (starts with http) and doesn't end with /api, add it
+if (API_URL.startsWith('http') && !API_URL.endsWith('/api') && !API_URL.endsWith('/api/')) {
+  // Ensure there's a trailing slash before appending /api
+  API_URL = API_URL.replace(/\/$/, '') + '/api'
+}
 
 const api = axios.create({
   baseURL: API_URL,

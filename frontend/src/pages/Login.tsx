@@ -22,8 +22,10 @@ export default function Login() {
     } catch (err: any) {
       console.error('Login error:', err)
       const errorMessage = err.response?.data?.detail || err.message || 'Login failed'
+      // Get the actual baseURL from api instance
       const apiUrl = import.meta.env.VITE_API_URL || 'Not set (using /api)'
-      setError(`${errorMessage}. API URL: ${apiUrl}`)
+      const baseUrl = err.config?.baseURL || apiUrl
+      setError(`${errorMessage} (Base URL: ${baseUrl})`)
     }
   }
 
