@@ -14,12 +14,17 @@ export default function Workouts() {
   const [rpe, setRpe] = useState([5])
   const [expectedSoreness, setExpectedSoreness] = useState<Record<string, number>>({})
   
-  const { data: workout, isLoading } = useQuery({
+  const { data: workout, isLoading, error: workoutError, refetch: refetchWorkout } = useQuery({
     queryKey: ['workout-today'],
     queryFn: async () => {
-      const response = await api.get('/workouts/today')
-      return response.data
+      try {
+        const response = await api.get('/workouts/today')
+        return response.data
+      } catch (err: any) {
+        throw new Error(err?.response?.data?.detail || err?.message || 'Failed to load workout')
+      }
     },
+    retry: 2,
   })
   
   const logWorkout = useMutation({
@@ -107,14 +112,26 @@ export default function Workouts() {
               <p className="text-muted-foreground mb-6">
                 Generate your workout plan to maintain continuous muscle soreness
               </p>
+              {workoutError && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-600">
+                    {(workoutError as Error)?.message || 'Failed to generate workout. Please try again.'}
+                  </p>
+                </div>
+              )}
               <Button 
-                onClick={() => {
-                  queryClient.invalidateQueries({ queryKey: ['workout-today'] })
+                onClick={async () => {
+                  try {
+                    await refetchWorkout()
+                  } catch (err) {
+                    console.error('Failed to generate workout:', err)
+                  }
                 }} 
                 size="lg"
                 className="shadow-lg hover:shadow-xl transition-all"
+                disabled={isLoading}
               >
-                Generate Workout
+                {isLoading ? 'Generating...' : 'Generate Workout'}
               </Button>
             </CardContent>
           </Card>

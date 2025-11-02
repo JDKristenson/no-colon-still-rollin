@@ -11,14 +11,23 @@ interface GroceryListProps {
 
 export default function GroceryList({ protocol }: GroceryListProps) {
   const [downloaded, setDownloaded] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   
-  const { data: groceryList, isLoading } = useQuery({
+  const { data: groceryList, isLoading, error: queryError } = useQuery({
     queryKey: ['grocery-list', protocol?.id],
     queryFn: async () => {
-      const response = await api.get('/protocol/grocery-list')
-      return response.data
+      try {
+        const response = await api.get('/protocol/grocery-list')
+        setError(null)
+        return response.data
+      } catch (err: any) {
+        const errorMessage = err?.response?.data?.detail || err?.message || 'Failed to load grocery list'
+        setError(errorMessage)
+        throw err
+      }
     },
     enabled: !!protocol,
+    retry: 1,
   })
 
   const handleDownload = () => {
@@ -62,6 +71,19 @@ export default function GroceryList({ protocol }: GroceryListProps) {
     return (
       <div className="flex items-center justify-center py-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
+  if (error || queryError) {
+    return (
+      <div className="text-center py-4">
+        <p className="text-sm text-red-600 mb-2">
+          {error || 'Failed to load grocery list'}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Generate a protocol first to create your shopping list
+        </p>
       </div>
     )
   }
