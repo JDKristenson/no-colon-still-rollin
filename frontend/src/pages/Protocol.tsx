@@ -4,8 +4,9 @@ import api from '@/lib/api'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Navigation from '@/components/Navigation'
-import { Check, RefreshCw, ShoppingCart, UtensilsCrossed } from 'lucide-react'
-import { useState } from 'react'
+import GroceryList from '@/components/GroceryList'
+import { Check, RefreshCw, UtensilsCrossed, ShoppingCart } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 export default function Protocol() {
   const queryClient = useQueryClient()
@@ -86,6 +87,14 @@ export default function Protocol() {
 
   const foods = protocol?.foods || []
   const completionPercentage = foods.length > 0 ? (checkedFoods.length / foods.length) * 100 : 0
+
+  // Sync checkedFoods with protocol when it loads
+  useEffect(() => {
+    if (protocol?.foods && checkedFoods.length === 0) {
+      // Optionally check foods that were already marked as consumed today
+      // This would require a separate API call to get compliance data
+    }
+  }, [protocol])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
@@ -377,15 +386,18 @@ export default function Protocol() {
                   </CardContent>
                 </Card>
 
-                {/* Shopping List Button */}
-                <Button
-                  variant="outline"
-                  className="w-full flex items-center gap-2"
-                  size="lg"
-                >
-                  <ShoppingCart size={18} />
-                  Generate Shopping List
-                </Button>
+                {/* Shopping List */}
+                <Card className="border-0 shadow-premium">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <ShoppingCart size={20} />
+                      Shopping List
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <GroceryList protocol={protocol} />
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </>

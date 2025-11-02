@@ -9,7 +9,7 @@ from app.api.v1.endpoints.auth import get_current_user
 from app.algorithms.protein_target import calculate_protein_target
 from app.algorithms.glutamine import calculate_glutamine_score
 from datetime import date, timedelta
-from typing import List, Dict
+from typing import List, Dict, Optional
 import json
 
 router = APIRouter()
@@ -47,6 +47,21 @@ async def get_today_protocol(
     ).first()
     
     if existing_protocol:
+        # Get active markers for response
+        active_markers = []
+        try:
+            from app.algorithms.glutamine import get_active_markers
+            active_markers = get_active_markers(current_user.id, db)
+        except Exception:
+            pass
+        
+        prioritization_notes = []
+        if active_markers:
+            active_target_ids = [m.target_id for m in active_markers]
+            prioritization_notes.append(f"Protocol prioritized for {len(active_target_ids)} active mutation(s)")
+            for marker in active_markers:
+                prioritization_notes.append(f"Targeting: {marker.chromosome}:{marker.position} ({marker.ref_base}→{marker.mut_base})")
+        
         return {
             "id": existing_protocol.id,
             "date": existing_protocol.date.isoformat(),
@@ -56,11 +71,27 @@ async def get_today_protocol(
             "total_protein": existing_protocol.total_protein,
             "total_fat": existing_protocol.total_fat,
             "total_calories": existing_protocol.total_calories,
+            "total_macros": {
+                "net_carbs": existing_protocol.total_net_carbs,
+                "protein": existing_protocol.total_protein,
+                "fat": existing_protocol.total_fat,
+                "calories": existing_protocol.total_calories,
+            },
             "protein_target": existing_protocol.protein_target,
             "protein_reasoning": existing_protocol.protein_reasoning,
             "keto_compatible": existing_protocol.keto_compatible,
             "keto_score": existing_protocol.keto_score,
             "estimated_glutamine_competition_score": existing_protocol.estimated_glutamine_competition_score,
+            "active_markers": [
+                {
+                    "target_id": m.target_id,
+                    "chromosome": m.chromosome,
+                    "position": m.position,
+                    "variant": f"{m.ref_base}→{m.mut_base}"
+                }
+                for m in active_markers
+            ],
+            "marker_prioritization_notes": prioritization_notes,
         }
     
     # Generate new protocol
@@ -199,7 +230,7 @@ async def generate_protocol(user: User, target_date: date, db: Session) -> Dict:
         total_protein=round(total_protein, 1),
         total_fat=round(total_fat, 1),
         total_calories=round(total_calories, 1),
-        protein_target=protein_data["target_grams"],
+        protein_target=protein_data.get("target_grams") or 150,
         protein_reasoning=protein_data["reasoning"],
         keto_compatible=keto_compatible,
         keto_score=round(keto_score, 1),
@@ -228,6 +259,12 @@ async def generate_protocol(user: User, target_date: date, db: Session) -> Dict:
         "total_protein": protocol.total_protein,
         "total_fat": protocol.total_fat,
         "total_calories": protocol.total_calories,
+        "total_macros": {
+            "net_carbs": protocol.total_net_carbs,
+            "protein": protocol.total_protein,
+            "fat": protocol.total_fat,
+            "calories": protocol.total_calories,
+        },
         "protein_target": protocol.protein_target,
         "protein_reasoning": protocol.protein_reasoning,
         "keto_compatible": protocol.keto_compatible,
@@ -267,3 +304,48 @@ async def get_protocol_history(
         }
         for p in protocols
     ]
+
+@router.get("/grocery-list")
+async def get_grocery_list(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Generate grocery list from today's protocol"""
+    today = date.today()
+    
+    # Get today's protocol
+    protocol = db.query(DailyProtocol).filter(
+        DailyProtocol.user_id == current_user.id,
+        DailyProtocol.date == today
+    ).first()
+    
+    if not protocol:
+        raise HTTPException(
+            status_code=404,
+            detail="No protocol found for today. Generate a protocol first."
+        )
+    
+    # Build grocery list from foods
+    grocery_items = []
+    for food in protocol.foods:
+        grocery_items.append({
+            "name": food.get("name"),
+            "amount": f"{food.get('amount_grams', 0)}g",
+            "category": "Produce" if any(x in food.get("name", "").lower() for x in ["turmeric", "ginger", "broccoli", "cauliflower"]) else "Supplements/Other",
+            "notes": food.get("preparation_notes") or food.get("reason", ""),
+        })
+    
+    # Group by category
+    grouped_items = {}
+    for item in grocery_items:
+        category = item["category"]
+        if category not in grouped_items:
+            grouped_items[category] = []
+        grouped_items[category].append(item)
+    
+    return {
+        "date": protocol.date.isoformat(),
+        "items": grocery_items,
+        "grouped": grouped_items,
+        "total_items": len(grocery_items),
+    }

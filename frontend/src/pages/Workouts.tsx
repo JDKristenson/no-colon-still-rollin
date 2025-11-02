@@ -107,7 +107,13 @@ export default function Workouts() {
               <p className="text-muted-foreground mb-6">
                 Generate your workout plan to maintain continuous muscle soreness
               </p>
-              <Button onClick={() => window.location.reload()} size="lg">
+              <Button 
+                onClick={() => {
+                  queryClient.invalidateQueries({ queryKey: ['workout-today'] })
+                }} 
+                size="lg"
+                className="shadow-lg hover:shadow-xl transition-all"
+              >
                 Generate Workout
               </Button>
             </CardContent>
