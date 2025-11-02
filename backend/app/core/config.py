@@ -38,6 +38,15 @@ class Settings(BaseSettings):
     # App
     PROJECT_NAME: str = "No Colon, Still Rollin'"
     
+    # Email settings (for verification emails)
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM_EMAIL: str = "noreply@nocolonstillrollin.com"
+    SMTP_FROM_NAME: str = "No Colon, Still Rollin'"
+    FRONTEND_URL: str = "http://localhost:5173"  # For verification links
+    
     class Config:
         env_file = ".env"
         case_sensitive = True
