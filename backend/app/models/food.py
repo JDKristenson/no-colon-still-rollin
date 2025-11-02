@@ -27,4 +27,7 @@ class Food(Base):
     # Safety and interactions
     contraindications = Column(Text)
     food_drug_interactions = Column(JSON)
+    
+    # Genetic marker targeting
+    targeted_markers = Column(JSON, nullable=True)  # Array of marker targetIds this food targets
 

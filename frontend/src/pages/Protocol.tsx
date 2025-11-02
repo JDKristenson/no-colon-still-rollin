@@ -88,10 +88,10 @@ export default function Protocol() {
   const completionPercentage = foods.length > 0 ? (checkedFoods.length / foods.length) * 100 : 0
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -99,17 +99,25 @@ export default function Protocol() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-tight">
                 Nutrition Protocol
               </h1>
-              <p className="text-muted-foreground mt-2">
+              <p className="text-muted-foreground mt-2 text-lg">
                 Your daily anti-cancer food protocol
               </p>
+              {protocol?.active_markers && protocol.active_markers.length > 0 && (
+                <div className="mt-3 flex items-center gap-2">
+                  <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium">
+                    {protocol.active_markers.length} Active Mutation{protocol.active_markers.length > 1 ? 's' : ''} Targeted
+                  </span>
+                </div>
+              )}
             </div>
             <Button
               onClick={() => generateProtocol.mutate()}
               disabled={generateProtocol.isPending}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 shadow-lg hover:shadow-xl transition-all"
+              size="lg"
             >
               <RefreshCw className={generateProtocol.isPending ? 'animate-spin' : ''} size={18} />
               {generateProtocol.isPending ? 'Generating...' : 'Generate Protocol'}
@@ -140,7 +148,7 @@ export default function Protocol() {
               animate={{ opacity: 1, y: 0 }}
               className="mb-6"
             >
-              <Card className="shadow-lg border-0 bg-gradient-to-r from-green-50 to-emerald-50">
+              <Card className="shadow-premium-lg border-0 bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between mb-4">
                     <div>
@@ -180,10 +188,10 @@ export default function Protocol() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Foods Checklist */}
               <div className="lg:col-span-2">
-                <Card className="shadow-lg border-0">
+                <Card className="shadow-premium border-0">
                   <CardHeader>
-                    <CardTitle>Protocol Foods</CardTitle>
-                    <CardDescription>
+                    <CardTitle className="text-2xl">Protocol Foods</CardTitle>
+                    <CardDescription className="text-base">
                       Check off foods as you consume them throughout the day
                     </CardDescription>
                   </CardHeader>
@@ -200,8 +208,8 @@ export default function Protocol() {
                             transition={{ delay: idx * 0.05 }}
                           >
                             <Card
-                              className={`cursor-pointer transition-all hover:shadow-md ${
-                                isChecked ? 'bg-green-50 border-green-200' : ''
+                              className={`cursor-pointer transition-all duration-300 hover:shadow-premium hover:scale-[1.02] ${
+                                isChecked ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-300 shadow-md' : 'hover:bg-blue-50/50'
                               }`}
                               onClick={() => handleFoodToggle(food.name)}
                             >

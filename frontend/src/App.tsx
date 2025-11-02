@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './contexts/AuthContext'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { useToast } from './hooks/useToast'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
@@ -12,6 +13,7 @@ import Progress from './pages/Progress'
 import Exercises from './pages/Exercises'
 import Research from './pages/Research'
 import Settings from './pages/Settings'
+import Markers from './pages/Markers'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const queryClient = new QueryClient({
@@ -23,12 +25,12 @@ const queryClient = new QueryClient({
   },
 })
 
-function App() {
+function AppContent() {
+  const { ToastContainer } = useToast()
+  
   return (
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <BrowserRouter>
+    <>
+      <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -41,6 +43,7 @@ function App() {
                       <Route path="/protocol" element={<Protocol />} />
                       <Route path="/workouts" element={<Workouts />} />
                       <Route path="/soreness" element={<Soreness />} />
+                      <Route path="/markers" element={<Markers />} />
                       <Route path="/progress" element={<Progress />} />
                       <Route path="/exercises" element={<Exercises />} />
                       <Route path="/research" element={<Research />} />
@@ -51,7 +54,18 @@ function App() {
                 }
               />
             </Routes>
-          </BrowserRouter>
+      </BrowserRouter>
+      <ToastContainer />
+    </>
+  )
+}
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <AppContent />
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

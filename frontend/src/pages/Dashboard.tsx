@@ -51,10 +51,10 @@ export default function Dashboard() {
   const metrics = dashboardData?.metrics || {}
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Coaching Message */}
         {coaching?.message && (
           <motion.div

@@ -88,6 +88,11 @@ async def generate_protocol(user: User, target_date: date, db: Session) -> Dict:
     if not foods:
         raise HTTPException(status_code=500, detail="No foods found in database")
     
+    # Get active markers for prioritization
+    from app.algorithms.glutamine import get_active_markers
+    active_markers = get_active_markers(user.id, db)
+    active_target_ids = [m.target_id for m in active_markers] if active_markers else []
+    
     # Get current soreness state for protein adjustment
     from app.algorithms.workout_rotation import get_current_soreness_state
     soreness_state = get_current_soreness_state(user.id, db)
@@ -109,9 +114,29 @@ async def generate_protocol(user: User, target_date: date, db: Session) -> Dict:
     
     weight_lbs = user.current_weight_lbs or 180  # Default if not set
     
+    # Calculate food relevance scores based on active markers
+    food_scores = []
     for food in foods:
-        # Use recommended amount (can be weight-adjusted in future)
-        amount_grams = food.recommended_amount_grams
+        relevance_score = 1.0  # Base score
+        
+        # If food has targeted_markers field and matches active markers, boost relevance
+        if hasattr(food, 'targeted_markers') and food.targeted_markers:
+            food_targets = food.targeted_markers if isinstance(food.targeted_markers, list) else []
+            matching_targets = set(food_targets) & set(active_target_ids)
+            if matching_targets:
+                # Boost by 20% per matching marker, max 40% boost
+                boost = min(0.40, len(matching_targets) * 0.20)
+                relevance_score = 1.0 + boost
+        
+        food_scores.append((food, relevance_score))
+    
+    # Sort foods by relevance (highest first)
+    food_scores.sort(key=lambda x: x[1], reverse=True)
+    
+    for food, relevance_score in food_scores:
+        # Use recommended amount, with boost for high-relevance foods
+        base_amount = food.recommended_amount_grams
+        amount_grams = base_amount * (1.2 if relevance_score > 1.0 else 1.0)
         
         # Calculate macros for this amount
         food_carbs = (food.net_carbs_per_100g / 100) * amount_grams
@@ -144,8 +169,8 @@ async def generate_protocol(user: User, target_date: date, db: Session) -> Dict:
     keto_compatible = total_net_carbs < 50
     keto_score = max(0, 100 - (total_net_carbs * 2))  # Simple scoring
     
-    # Calculate glutamine competition score
-    glutamine_score = calculate_glutamine_score(user.id, db)
+    # Calculate glutamine competition score (with active markers)
+    glutamine_score = calculate_glutamine_score(user.id, db, active_markers)
     
     # Create protocol record
     protocol = DailyProtocol(
@@ -168,6 +193,15 @@ async def generate_protocol(user: User, target_date: date, db: Session) -> Dict:
     db.commit()
     db.refresh(protocol)
     
+    # Build prioritization notes
+    prioritization_notes = []
+    if active_target_ids:
+        prioritization_notes.append(f"Protocol prioritized for {len(active_target_ids)} active mutation(s)")
+        for target_id in active_target_ids:
+            marker = next((m for m in active_markers if m.target_id == target_id), None)
+            if marker:
+                prioritization_notes.append(f"Targeting: {marker.chromosome}:{marker.position} ({marker.ref_base}→{marker.mut_base})")
+    
     return {
         "id": protocol.id,
         "date": protocol.date.isoformat(),
@@ -182,6 +216,16 @@ async def generate_protocol(user: User, target_date: date, db: Session) -> Dict:
         "keto_compatible": protocol.keto_compatible,
         "keto_score": protocol.keto_score,
         "estimated_glutamine_competition_score": protocol.estimated_glutamine_competition_score,
+        "active_markers": [
+            {
+                "target_id": m.target_id,
+                "chromosome": m.chromosome,
+                "position": m.position,
+                "variant": f"{m.ref_base}→{m.mut_base}"
+            }
+            for m in active_markers
+        ],
+        "marker_prioritization_notes": prioritization_notes,
     }
 
 @router.get("/history")

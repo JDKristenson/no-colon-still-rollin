@@ -83,10 +83,22 @@ export default function Workouts() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-tight">
+            Workout Plan
+          </h1>
+          <p className="text-muted-foreground mt-2 text-lg">
+            Maintain continuous muscle soreness for glutamine competition
+          </p>
+        </motion.div>
         {!workout && (
           <Card className="shadow-lg border-0">
             <CardContent className="py-12 text-center">
@@ -110,7 +122,7 @@ export default function Workouts() {
               animate={{ opacity: 1, y: 0 }}
               className="mb-6"
             >
-              <Card className="shadow-lg border-0 bg-gradient-to-r from-blue-50 to-indigo-50">
+              <Card className="shadow-premium-lg border-0 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50">
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between">
                     <div>
@@ -141,10 +153,10 @@ export default function Workouts() {
             {/* Exercises */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
-                <Card className="shadow-lg border-0 mb-6">
+                <Card className="shadow-premium border-0 mb-6">
                   <CardHeader>
-                    <CardTitle>Exercises</CardTitle>
-                    <CardDescription>
+                    <CardTitle className="text-2xl">Exercises</CardTitle>
+                    <CardDescription className="text-base">
                       Complete each exercise as prescribed
                     </CardDescription>
                   </CardHeader>
@@ -157,9 +169,9 @@ export default function Workouts() {
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: idx * 0.1 }}
                         >
-                          <Card className={`${
+                          <Card className={`transition-all duration-300 hover:shadow-premium hover:scale-[1.01] ${
                             completedExercises[exercise.name] 
-                              ? 'bg-green-50 border-green-200' 
+                              ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-300 shadow-md' 
                               : ''
                           }`}>
                             <CardContent className="pt-4">

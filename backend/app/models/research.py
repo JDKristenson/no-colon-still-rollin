@@ -20,4 +20,7 @@ class ResearchStudy(Base):
     
     url = Column(String)
     doi = Column(String)
+    
+    # Genetic marker relevance
+    related_markers = Column(JSON, nullable=True)  # Array of marker targetIds this research relates to
 

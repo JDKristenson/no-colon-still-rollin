@@ -53,7 +53,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
       <svg
         viewBox="0 0 400 600"
         className="w-full h-auto"
-        style={{ filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))' }}
+        style={{ filter: 'drop-shadow(0 10px 25px rgba(0, 0, 0, 0.15))' }}
       >
         {/* Background circle - Vitruvian Man style */}
         <circle
@@ -61,9 +61,9 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           cy="300"
           r="280"
           fill="none"
-          stroke="#E5E7EB"
-          strokeWidth="2"
-          opacity="0.3"
+          stroke="#CBD5E1"
+          strokeWidth="1.5"
+          opacity="0.4"
         />
         
         {/* Square frame - Vitruvian Man style */}
@@ -73,10 +73,18 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           width="300"
           height="500"
           fill="none"
-          stroke="#E5E7EB"
-          strokeWidth="2"
-          opacity="0.3"
+          stroke="#CBD5E1"
+          strokeWidth="1.5"
+          opacity="0.4"
         />
+        
+        {/* Decorative gradient circle */}
+        <defs>
+          <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#F8FAFC" stopOpacity="1" />
+            <stop offset="100%" stopColor="#E2E8F0" stopOpacity="0.8" />
+          </linearGradient>
+        </defs>
 
         {/* Body outline - Simplified Vitruvian Man figure */}
         {/* Head */}
@@ -85,13 +93,13 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           cy="80"
           rx="25"
           ry="25"
-          fill="#F9FAFB"
-          stroke="#1F2937"
+          fill="url(#bodyGradient)"
+          stroke="#334155"
           strokeWidth="2"
         />
 
         {/* Neck */}
-        <rect x="190" y="105" width="20" height="15" fill="#F9FAFB" stroke="#1F2937" strokeWidth="2" />
+        <rect x="190" y="105" width="20" height="15" fill="url(#bodyGradient)" stroke="#334155" strokeWidth="2" />
 
         {/* Torso */}
         <rect
@@ -99,8 +107,8 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           y="120"
           width="80"
           height="120"
-          fill="#F9FAFB"
-          stroke="#1F2937"
+          fill="url(#bodyGradient)"
+          stroke="#334155"
           strokeWidth="2"
           rx="5"
         />
@@ -111,7 +119,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           y1="150"
           x2="120"
           y2="220"
-          stroke="#1F2937"
+          stroke="#334155"
           strokeWidth="8"
           strokeLinecap="round"
           fill="none"
@@ -133,7 +141,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           y1="150"
           x2="280"
           y2="220"
-          stroke="#1F2937"
+          stroke="#334155"
           strokeWidth="8"
           strokeLinecap="round"
           fill="none"
@@ -156,7 +164,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           y1="240"
           x2="150"
           y2="380"
-          stroke="#1F2937"
+          stroke="#334155"
           strokeWidth="10"
           strokeLinecap="round"
           fill="none"
@@ -176,7 +184,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
           y1="240"
           x2="250"
           y2="380"
-          stroke="#1F2937"
+          stroke="#334155"
           strokeWidth="10"
           strokeLinecap="round"
           fill="none"

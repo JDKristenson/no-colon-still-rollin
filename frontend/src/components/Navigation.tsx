@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { motion } from 'framer-motion'
-import { Home, UtensilsCrossed, Dumbbell, Activity, TrendingUp, BookOpen, Settings, LogOut } from 'lucide-react'
+import { Home, UtensilsCrossed, Dumbbell, Activity, TrendingUp, BookOpen, Settings, LogOut, Dna } from 'lucide-react'
 import { Button } from './ui/button'
 
 export default function Navigation() {
@@ -13,17 +13,21 @@ export default function Navigation() {
     { path: '/protocol', icon: UtensilsCrossed, label: 'Nutrition' },
     { path: '/workouts', icon: Dumbbell, label: 'Workouts' },
     { path: '/soreness', icon: Activity, label: 'Soreness' },
+    { path: '/markers', icon: Dna, label: 'Markers' },
     { path: '/progress', icon: TrendingUp, label: 'Progress' },
     { path: '/research', icon: BookOpen, label: 'Research' },
     { path: '/settings', icon: Settings, label: 'Settings' },
   ]
   
   return (
-    <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50">
-      <div className="container mx-auto px-4">
+    <nav className="glass border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
+      <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
+              <span className="text-white font-bold text-sm">NC</span>
+            </div>
+            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-tight">
               No Colon, Still Rollin'
             </h1>
           </div>

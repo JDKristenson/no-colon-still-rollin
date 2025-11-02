@@ -1,10 +1,11 @@
 from sqlalchemy.orm import Session
 from app.models.soreness import SorenessRecord
 from app.models.compliance import ComplianceRecord
+from app.models.genetic_marker import GeneticMarker, CTDNATestResult, DetectedMarker
 from datetime import date
-from typing import List
+from typing import List, Optional
 
-def calculate_glutamine_score(user_id: int, db: Session) -> float:
+def calculate_glutamine_score(user_id: int, db: Session, active_markers: Optional[List] = None) -> float:
     """
     Complex glutamine competition score calculation
     
@@ -49,7 +50,43 @@ def calculate_glutamine_score(user_id: int, db: Session) -> float:
     # Protein penalty (would need protein intake data - placeholder)
     protein_penalty = 0  # TODO: Calculate based on actual protein intake
     
-    score = (coverage_score * intensity_multiplier * adherence_multiplier) - protein_penalty
+    base_score = (coverage_score * intensity_multiplier * adherence_multiplier) - protein_penalty
+    
+    # Marker-based boost: Active markers indicate higher priority for glutamine competition
+    if active_markers is None:
+        # Query active markers if not provided
+        active_markers = get_active_markers(user_id, db)
+    
+    marker_count = len(active_markers) if active_markers else 0
+    if marker_count > 0:
+        # Boost score by 15% per active marker, max 30% boost for 2+ markers
+        marker_boost = min(0.30, marker_count * 0.15)
+        base_score = base_score * (1 + marker_boost)
+    
+    score = base_score
     
     return max(0.0, min(100.0, score))
+
+def get_active_markers(user_id: int, db: Session) -> List[GeneticMarker]:
+    """
+    Get currently detected markers from the most recent test.
+    Returns list of GeneticMarker objects that are currently active.
+    """
+    # Get most recent test
+    latest_test = db.query(CTDNATestResult).filter(
+        CTDNATestResult.user_id == user_id
+    ).order_by(CTDNATestResult.test_date.desc()).first()
+    
+    if not latest_test:
+        return []
+    
+    # Get detected markers from this test
+    detected = db.query(DetectedMarker).filter(
+        DetectedMarker.test_result_id == latest_test.id,
+        DetectedMarker.detected == True
+    ).all()
+    
+    # Return the actual marker objects
+    markers = [d.marker for d in detected if d.marker]
+    return markers
 

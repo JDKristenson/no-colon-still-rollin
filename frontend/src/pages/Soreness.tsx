@@ -103,19 +103,19 @@ export default function Soreness() {
   const soreCount = Object.values(sorenessValues).filter(v => v >= 5).length
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-tight">
             Muscle Soreness Tracker
           </h1>
-          <p className="text-muted-foreground mt-2">
+          <p className="text-muted-foreground mt-2 text-lg">
             Track your muscle soreness to maintain continuous glutamine competition
           </p>
         </motion.div>
@@ -148,7 +148,7 @@ export default function Soreness() {
             animate={{ opacity: 1, scale: 1 }}
             className="mb-6"
           >
-            <Card className="shadow-lg border-0 bg-gradient-to-r from-purple-50 to-indigo-50">
+            <Card className="shadow-premium-lg border-0 bg-gradient-to-r from-purple-50 via-indigo-50 to-pink-50">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -186,10 +186,10 @@ export default function Soreness() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            <Card className="shadow-lg border-0">
+            <Card className="shadow-premium border-0">
               <CardHeader>
-                <CardTitle>Visual Soreness Map</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-2xl">Visual Soreness Map</CardTitle>
+                <CardDescription className="text-base">
                   Interactive body diagram - click muscle groups to update
                 </CardDescription>
               </CardHeader>
@@ -209,10 +209,10 @@ export default function Soreness() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            <Card className="shadow-lg border-0">
+            <Card className="shadow-premium border-0">
               <CardHeader>
-                <CardTitle>Rate Your Soreness</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-2xl">Rate Your Soreness</CardTitle>
+                <CardDescription className="text-base">
                   Rate each muscle group on a scale of 0-10
                 </CardDescription>
               </CardHeader>
