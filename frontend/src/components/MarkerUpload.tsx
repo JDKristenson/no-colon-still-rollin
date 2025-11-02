@@ -25,7 +25,7 @@ export default function MarkerUpload({ onSuccess }: MarkerUploadProps) {
       })
       return response.data
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       setFile(null)
       if (onSuccess) onSuccess()
     },
@@ -107,7 +107,7 @@ export default function MarkerUpload({ onSuccess }: MarkerUploadProps) {
                 className="hidden"
               />
               <label htmlFor="file-upload">
-                <Button as="span" variant="outline">
+                <Button type="button" variant="outline" className="cursor-pointer">
                   Select File
                 </Button>
               </label>
@@ -184,11 +184,15 @@ export default function MarkerUpload({ onSuccess }: MarkerUploadProps) {
               <CheckCircle2 className="mx-auto text-green-600 mb-4" size={48} />
               <h3 className="text-lg font-semibold mb-2">Upload Successful!</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Processed {uploadMutation.data.markers_processed} markers
-                {uploadMutation.data.markers_detected > 0 && (
-                  <span className="text-red-600 font-medium ml-2">
-                    • {uploadMutation.data.markers_detected} detected
-                  </span>
+                {uploadMutation.data && (
+                  <>
+                    Processed {uploadMutation.data.markers_processed} markers
+                    {uploadMutation.data.markers_detected > 0 && (
+                      <span className="text-red-600 font-medium ml-2">
+                        • {uploadMutation.data.markers_detected} detected
+                      </span>
+                    )}
+                  </>
                 )}
               </p>
             </motion.div>

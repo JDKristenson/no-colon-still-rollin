@@ -1,10 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import api from '@/lib/api'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Navigation from '@/components/Navigation'
-import { Upload, CheckCircle2, Circle, AlertCircle, Calendar, FileText, Dna } from 'lucide-react'
+import { Upload, Circle, AlertCircle, Calendar, FileText, Dna } from 'lucide-react'
 import { useState } from 'react'
 import MarkerUpload from '@/components/MarkerUpload'
 
