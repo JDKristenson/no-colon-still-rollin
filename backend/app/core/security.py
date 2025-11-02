@@ -23,24 +23,31 @@ def get_password_hash(password: str) -> str:
     Bcrypt has a 72-byte limit, so we truncate longer passwords.
     This is safe because bcrypt truncates at 72 bytes anyway.
     """
-    # Convert password to bytes to check length
+    # Convert password to bytes immediately
     password_bytes = password.encode('utf-8')
-    if len(password_bytes) > 72:
-        # Truncate to 72 bytes (not characters) - decode back to string
-        # We truncate to 71 bytes to be safe, then decode
-        truncated_bytes = password_bytes[:71]
-        password = truncated_bytes.decode('utf-8', errors='ignore')
-        # Re-encode to verify it's under 72 bytes
-        if len(password.encode('utf-8')) > 72:
-            # If still too long, truncate more aggressively
-            password = password_bytes[:70].decode('utf-8', errors='ignore')
     
-    # Double-check before hashing
-    final_bytes = password.encode('utf-8')
-    if len(final_bytes) > 72:
-        password = final_bytes[:71].decode('utf-8', errors='ignore')
+    # Truncate to 70 bytes to be safe (well under 72 limit)
+    if len(password_bytes) > 70:
+        password_bytes = password_bytes[:70]
     
-    return pwd_context.hash(password)
+    # Decode back to string (this should always be <= 70 bytes when re-encoded)
+    password = password_bytes.decode('utf-8', errors='ignore')
+    
+    # Final safety check - if still too long, truncate again
+    final_check = password.encode('utf-8')
+    if len(final_check) > 72:
+        # This should never happen, but if it does, truncate more aggressively
+        password = final_check[:68].decode('utf-8', errors='ignore')
+    
+    # Hash with try/except as final safety net
+    try:
+        return pwd_context.hash(password)
+    except ValueError as e:
+        # If bcrypt still complains (shouldn't happen now), truncate to 60 bytes
+        if "cannot be longer than 72 bytes" in str(e):
+            safe_password = password.encode('utf-8')[:60].decode('utf-8', errors='ignore')
+            return pwd_context.hash(safe_password)
+        raise
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
