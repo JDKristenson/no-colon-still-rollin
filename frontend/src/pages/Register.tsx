@@ -35,7 +35,7 @@ export default function Register() {
       >
         <Card className="shadow-xl border-0">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-3xl font-bold text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent flex items-center justify-center gap-3">
+            <div className="flex items-center justify-center gap-3">
               <svg
                 width="32"
                 height="32"
@@ -82,8 +82,10 @@ export default function Register() {
                 {/* Small details on head */}
                 <circle cx="11.5" cy="17.5" r="0.5" fill="white" />
               </svg>
-              <span>Join the Journey</span>
-            </CardTitle>
+              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                Join the Journey
+              </CardTitle>
+            </div>
             <CardDescription className="text-center">
               Create your account to get started
             </CardDescription>
