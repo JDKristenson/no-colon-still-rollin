@@ -152,48 +152,67 @@ export default function Dashboard() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+            whileHover={{ y: -4, scale: 1.02 }}
           >
-            <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-purple-50 hover:shadow-xl transition-shadow">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                  <Calendar className="text-purple-600" size={20} />
+            <Card className="relative overflow-hidden border-0 shadow-premium bg-gradient-to-br from-white via-purple-50/50 to-violet-100/30 hover:shadow-premium-lg transition-all duration-300">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+              <CardHeader className="pb-3 relative">
+                <CardTitle className="text-base font-semibold flex items-center gap-2.5 text-gray-700">
+                  <div className="p-2 rounded-lg bg-purple-100 text-purple-600">
+                    <Calendar size={18} />
+                  </div>
                   Streak
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-purple-600">
-                  🔥 {metrics.current_streak || 0} days
+              <CardContent className="relative">
+                <div className="flex items-center gap-2 text-4xl font-bold text-purple-600 mb-2">
+                  <span className="text-3xl">🔥</span>
+                  <span>{metrics.current_streak || 0}</span>
+                  <span className="text-xl text-gray-500 font-normal">days</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">
-                  {metrics.is_perfect_day ? "Perfect day today!" : "Keep going!"}
-                </p>
+                <div className="px-3 py-1.5 rounded-lg bg-purple-50/80 border border-purple-100 mt-3">
+                  <p className="text-sm font-medium text-purple-700">
+                    {metrics.is_perfect_day ? "✨ Perfect day today!" : "💪 Keep going!"}
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+            whileHover={{ y: -4, scale: 1.02 }}
           >
-            <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-amber-50 hover:shadow-xl transition-shadow">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                  <Activity className="text-amber-600" size={20} />
+            <Card className="relative overflow-hidden border-0 shadow-premium bg-gradient-to-br from-white via-amber-50/50 to-orange-100/30 hover:shadow-premium-lg transition-all duration-300">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+              <CardHeader className="pb-3 relative">
+                <CardTitle className="text-base font-semibold flex items-center gap-2.5 text-gray-700">
+                  <div className="p-2 rounded-lg bg-amber-100 text-amber-600">
+                    <Activity size={18} />
+                  </div>
                   Adherence
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-amber-600">
-                  {metrics.combined_adherence?.toFixed(0) || 0}%
+              <CardContent className="relative">
+                <div className="text-4xl font-bold text-amber-600 mb-3">
+                  {metrics.combined_adherence?.toFixed(0) || 0}
+                  <span className="text-xl text-gray-500 font-normal">%</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Nutrition: {nutrition.adherence_percentage?.toFixed(0) || 0}% | 
-                  Workout: {workout.adherence_percentage?.toFixed(0) || 0}%
-                </p>
+                <div className="space-y-1.5 mt-3">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-600">Nutrition</span>
+                    <span className="font-semibold text-gray-700">{nutrition.adherence_percentage?.toFixed(0) || 0}%</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-600">Workout</span>
+                    <span className="font-semibold text-gray-700">{workout.adherence_percentage?.toFixed(0) || 0}%</span>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -207,7 +226,7 @@ export default function Dashboard() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <Card className="shadow-lg border-0 h-full">
+            <Card className="border-0 shadow-premium bg-white/90 backdrop-blur-sm h-full hover:shadow-premium-lg transition-all duration-300">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <span>Today's Nutrition Protocol</span>
@@ -261,7 +280,7 @@ export default function Dashboard() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6 }}
           >
-            <Card className="shadow-lg border-0 h-full">
+            <Card className="border-0 shadow-premium bg-white/90 backdrop-blur-sm h-full hover:shadow-premium-lg transition-all duration-300">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <span>Today's Workout</span>
@@ -329,7 +348,7 @@ export default function Dashboard() {
           transition={{ delay: 0.7 }}
           className="mb-8"
         >
-          <Card className="shadow-lg border-0">
+          <Card className="border-0 shadow-premium bg-white/90 backdrop-blur-sm hover:shadow-premium-lg transition-all duration-300">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>Muscle Soreness Map</span>
@@ -367,7 +386,7 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
           >
-            <Card className="shadow-lg border-0">
+            <Card className="border-0 shadow-premium bg-white/90 backdrop-blur-sm hover:shadow-premium-lg transition-all duration-300">
               <CardHeader>
                 <CardTitle>Weight Trend (30 Days)</CardTitle>
               </CardHeader>
