@@ -128,7 +128,7 @@ async def login(form_data: LoginRequest, db: Session = Depends(get_db)):
 async def get_current_user_info(current_user: User = Depends(get_current_user)):
     return current_user
 
-@router.post("/verify-email")
+@router.get("/verify-email")
 async def verify_email(token: str, db: Session = Depends(get_db)):
     """
     Verify email address using verification token.
