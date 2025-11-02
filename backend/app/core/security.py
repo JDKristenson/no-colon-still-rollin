@@ -5,9 +5,11 @@ from passlib.context import CryptContext
 from app.core.config import settings
 
 # Configure passlib for bcrypt (bcrypt has 72-byte limit, handled in get_password_hash)
+# Disable wrap bug detection to avoid initialization errors
 pwd_context = CryptContext(
     schemes=["bcrypt"],
-    deprecated="auto"
+    deprecated="auto",
+    bcrypt__ident="2b"  # Use bcrypt 2b format explicitly
 )
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
