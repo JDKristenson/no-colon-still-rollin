@@ -6,11 +6,13 @@ import { Button } from '@/components/ui/button'
 import Navigation from '@/components/Navigation'
 import GroceryList from '@/components/GroceryList'
 import { Check, RefreshCw, UtensilsCrossed, ShoppingCart } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Protocol() {
   const queryClient = useQueryClient()
   const [checkedFoods, setCheckedFoods] = useState<string[]>([])
+  const [lastProtocolId, setLastProtocolId] = useState<number | null>(null)
+  const complianceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   
   const { data: protocol, isLoading } = useQuery({
     queryKey: ['protocol-today'],
@@ -55,10 +57,17 @@ export default function Protocol() {
       return response.data
     },
     onSuccess: () => {
+      // Only invalidate, don't refetch immediately to prevent loops
       queryClient.invalidateQueries({ queryKey: ['compliance-stats'] })
       queryClient.invalidateQueries({ queryKey: ['dashboard'] })
     },
+    onError: (err) => {
+      console.error('Compliance save error:', err)
+    },
   })
+  
+  // Use ref to debounce compliance saves
+  const complianceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   
   const handleFoodToggle = (foodName: string) => {
     const newChecked = checkedFoods.includes(foodName)
@@ -66,9 +75,29 @@ export default function Protocol() {
       : [...checkedFoods, foodName]
     setCheckedFoods(newChecked)
     
-    // Auto-save compliance
-    logCompliance.mutate(newChecked)
+    // Clear previous timeout
+    if (complianceTimeoutRef.current) {
+      clearTimeout(complianceTimeoutRef.current)
+    }
+    
+    // Auto-save compliance - debounce to prevent excessive API calls
+    complianceTimeoutRef.current = setTimeout(() => {
+      logCompliance.mutate(newChecked, {
+        onError: (err) => {
+          console.error('Failed to save compliance:', err)
+        }
+      })
+    }, 500) // 500ms debounce
   }
+  
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (complianceTimeoutRef.current) {
+        clearTimeout(complianceTimeoutRef.current)
+      }
+    }
+  }, [])
   
   const handleCheckAll = () => {
     if (protocol?.foods) {
@@ -97,14 +126,16 @@ export default function Protocol() {
   const foods = protocol?.foods || []
   const completionPercentage = foods.length > 0 ? (checkedFoods.length / foods.length) * 100 : 0
 
-  // Sync checkedFoods with protocol when it loads - only once
+  // Track protocol ID to reset checked foods on new protocol
+  const [lastProtocolId, setLastProtocolId] = useState<number | null>(null)
+  
   useEffect(() => {
-    if (protocol?.foods && checkedFoods.length === 0 && protocol.foods.length > 0) {
-      // Initialize with empty array - don't auto-check anything
-      // Compliance data will be loaded separately if needed
+    if (protocol?.id && protocol.id !== lastProtocolId) {
+      // New protocol detected - reset checked foods
+      setCheckedFoods([])
+      setLastProtocolId(protocol.id)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [protocol?.id]) // Only depend on protocol ID, not the whole protocol object
+  }, [protocol?.id, lastProtocolId])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">

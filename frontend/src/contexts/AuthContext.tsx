@@ -29,11 +29,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const storedToken = localStorage.getItem('token')
     if (storedToken) {
       setToken(storedToken)
-      fetchUser(storedToken)
+      fetchUser(storedToken).catch(() => {
+        // Error already handled in fetchUser
+      })
     } else {
       setLoading(false)
     }
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Only run once on mount
 
   const fetchUser = async (authToken: string) => {
     try {

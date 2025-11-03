@@ -8,7 +8,7 @@ import Navigation from '@/components/Navigation'
 import VitruvianMan from '@/components/VitruvianMan'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertTriangle, CheckCircle, Zap } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Soreness() {
   const queryClient = useQueryClient()
@@ -35,9 +35,23 @@ export default function Soreness() {
 
   useEffect(() => {
     if (currentSoreness?.muscle_groups) {
-      setSorenessValues(currentSoreness.muscle_groups)
+      // Create a stable reference comparison
+      const newValues = currentSoreness.muscle_groups
+      const currentValues = sorenessValues
+      
+      // Only update if there's an actual difference
+      const hasChanged = Object.keys(newValues).some(
+        key => currentValues[key] !== newValues[key]
+      ) || Object.keys(currentValues).some(
+        key => !(key in newValues) || currentValues[key] !== newValues[key]
+      )
+      
+      if (hasChanged) {
+        setSorenessValues({ ...newValues })
+      }
     }
-  }, [currentSoreness])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSoreness?.muscle_groups]) // Depend only on the muscle groups object reference
   
   const { data: coverageWarning } = useQuery({
     queryKey: ['soreness-coverage-warning'],
