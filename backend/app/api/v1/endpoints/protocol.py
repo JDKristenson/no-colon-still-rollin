@@ -98,8 +98,8 @@ async def get_today_protocol(
     return await generate_protocol(current_user, today, db)
 
 @router.post("/generate")
-async def generate_protocol(
-    target_date: date = None,
+async def generate_protocol_endpoint(
+    target_date: Optional[date] = None,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):

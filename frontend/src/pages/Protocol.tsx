@@ -30,11 +30,20 @@ export default function Protocol() {
   
   const generateProtocol = useMutation({
     mutationFn: async () => {
-      const response = await api.post('/protocol/generate')
-      return response.data
+      try {
+        const response = await api.post('/protocol/generate')
+        return response.data
+      } catch (err: any) {
+        const errorMsg = err?.response?.data?.detail || err?.message || 'Failed to generate protocol'
+        throw new Error(errorMsg)
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['protocol-today'] })
+      queryClient.invalidateQueries({ queryKey: ['grocery-list'] })
+    },
+    onError: (error: Error) => {
+      console.error('Protocol generation error:', error)
     },
   })
   
