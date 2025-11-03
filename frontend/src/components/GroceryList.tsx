@@ -3,32 +3,43 @@ import { motion } from 'framer-motion'
 import api from '@/lib/api'
 import { Button } from './ui/button'
 import { Download, Check } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface GroceryListProps {
   protocol: any
 }
 
+interface GroceryListItem {
+  name: string
+  amount: string
+  category: string
+  notes: string
+}
+
+interface GroceryListData {
+  date: string
+  items: GroceryListItem[]
+  grouped: Record<string, GroceryListItem[]>
+  total_items: number
+}
+
 export default function GroceryList({ protocol }: GroceryListProps) {
   const [downloaded, setDownloaded] = useState(false)
-  const [error, setError] = useState<string | null>(null)
   
-  const { data: groceryList, isLoading, error: queryError } = useQuery({
+  const { data: groceryList, isLoading, error: queryError } = useQuery<GroceryListData>({
     queryKey: ['grocery-list', protocol?.id],
     queryFn: async () => {
       const response = await api.get('/protocol/grocery-list')
-      return response.data
+      return response.data as GroceryListData
     },
     enabled: !!protocol,
     retry: 1,
-    onError: (err: any) => {
-      const errorMessage = err?.response?.data?.detail || err?.message || 'Failed to load grocery list'
-      setError(errorMessage)
-    },
-    onSuccess: () => {
-      setError(null)
-    },
   })
+
+  // Extract error message safely
+  const errorMessage = queryError 
+    ? ((queryError as any)?.response?.data?.detail || (queryError as any)?.message || 'Failed to load grocery list')
+    : null
 
   const handleDownload = () => {
     if (!groceryList) return
@@ -75,11 +86,11 @@ export default function GroceryList({ protocol }: GroceryListProps) {
     )
   }
 
-  if (error || queryError) {
+  if (errorMessage) {
     return (
       <div className="text-center py-4">
         <p className="text-sm text-red-600 mb-2">
-          {error || 'Failed to load grocery list'}
+          {errorMessage}
         </p>
         <p className="text-xs text-muted-foreground">
           Generate a protocol first to create your shopping list
