@@ -97,13 +97,14 @@ export default function Protocol() {
   const foods = protocol?.foods || []
   const completionPercentage = foods.length > 0 ? (checkedFoods.length / foods.length) * 100 : 0
 
-  // Sync checkedFoods with protocol when it loads
+  // Sync checkedFoods with protocol when it loads - only once
   useEffect(() => {
-    if (protocol?.foods && checkedFoods.length === 0) {
-      // Optionally check foods that were already marked as consumed today
-      // This would require a separate API call to get compliance data
+    if (protocol?.foods && checkedFoods.length === 0 && protocol.foods.length > 0) {
+      // Initialize with empty array - don't auto-check anything
+      // Compliance data will be loaded separately if needed
     }
-  }, [protocol])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [protocol?.id]) // Only depend on protocol ID, not the whole protocol object
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">

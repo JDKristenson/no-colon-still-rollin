@@ -16,18 +16,18 @@ export default function GroceryList({ protocol }: GroceryListProps) {
   const { data: groceryList, isLoading, error: queryError } = useQuery({
     queryKey: ['grocery-list', protocol?.id],
     queryFn: async () => {
-      try {
-        const response = await api.get('/protocol/grocery-list')
-        setError(null)
-        return response.data
-      } catch (err: any) {
-        const errorMessage = err?.response?.data?.detail || err?.message || 'Failed to load grocery list'
-        setError(errorMessage)
-        throw err
-      }
+      const response = await api.get('/protocol/grocery-list')
+      return response.data
     },
     enabled: !!protocol,
     retry: 1,
+    onError: (err: any) => {
+      const errorMessage = err?.response?.data?.detail || err?.message || 'Failed to load grocery list'
+      setError(errorMessage)
+    },
+    onSuccess: () => {
+      setError(null)
+    },
   })
 
   const handleDownload = () => {
