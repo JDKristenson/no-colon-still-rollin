@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import api from '@/lib/api'
 import { Button } from './ui/button'
 import { Download, Check } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 interface GroceryListProps {
   protocol: any
