@@ -60,8 +60,7 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
   }
 
   // Try to load the actual image from public folder, fallback to CDN if needed
-  const vitruvianImageUrl = '/vitruvian-man.jpg' || '/vitruvian-man.png' || '/vitruvian-man.svg' || 
-    'https://upload.wikimedia.org/wikipedia/commons/1/14/Vitruvian_Man_by_Leonardo_da_Vinci.jpg'
+  const vitruvianImageUrl = '/vitruvian-man.jpg'
 
   return (
     <div className="w-full max-w-4xl mx-auto relative">
