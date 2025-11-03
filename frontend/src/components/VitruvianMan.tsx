@@ -75,11 +75,10 @@ export default function VitruvianMan({ soreness, onMuscleClick, interactive = tr
             filter: 'drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15))',
           }}
           onError={(e) => {
-            // Fallback to Wikipedia image if local fails
+            // Fallback to high-quality Wikimedia image
             const target = e.target as HTMLImageElement
-            if (!target.src.includes('wikimedia')) {
-              target.src = 'https://upload.wikimedia.org/wikipedia/commons/1/14/Vitruvian_Man_by_Leonardo_da_Vinci.jpg'
-            }
+            console.log('Local image failed, using Wikimedia fallback')
+            target.src = 'https://upload.wikimedia.org/wikipedia/commons/1/14/Vitruvian_Man_by_Leonardo_da_Vinci.jpg'
           }}
         />
         
