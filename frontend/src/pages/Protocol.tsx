@@ -66,9 +66,6 @@ export default function Protocol() {
     },
   })
   
-  // Use ref to debounce compliance saves
-  const complianceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  
   const handleFoodToggle = (foodName: string) => {
     const newChecked = checkedFoods.includes(foodName)
       ? checkedFoods.filter(f => f !== foodName)
@@ -127,8 +124,6 @@ export default function Protocol() {
   const completionPercentage = foods.length > 0 ? (checkedFoods.length / foods.length) * 100 : 0
 
   // Track protocol ID to reset checked foods on new protocol
-  const [lastProtocolId, setLastProtocolId] = useState<number | null>(null)
-  
   useEffect(() => {
     if (protocol?.id && protocol.id !== lastProtocolId) {
       // New protocol detected - reset checked foods

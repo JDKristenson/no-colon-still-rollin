@@ -8,7 +8,7 @@ import Navigation from '@/components/Navigation'
 import VitruvianMan from '@/components/VitruvianMan'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertTriangle, CheckCircle, Zap } from 'lucide-react'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Soreness() {
   const queryClient = useQueryClient()
